@@ -1,6 +1,6 @@
 # TeammatchFrontend
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
+This project is for E6156 Cloud Computing **Team Match Project** and  was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.
 
 ## Development server
 
