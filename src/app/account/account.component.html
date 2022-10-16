@@ -35,6 +35,7 @@
     </form>
     <form id="login-form">
       <h1>Welcome back to Teammatcher!</h1>
+      <app-messages></app-messages>
       <div class="form-group form-inline">
         <label for="uni_login">UNI</label>
         <input id="uni_login" name = "input" type="text" [(ngModel)]="this.uni">
@@ -43,7 +44,7 @@
         <label for="pwd_login">PASSWORD</label>
         <input id="pwd_login" name="input" type="password" [(ngModel)]="this.password"/>
       </div>
-      <button>login</button>
+      <button (click)="logIntoAccount()">login</button>
       <p class="message">
         Not registered? <a (click)="changeForm()">Create an account</a>
       </p>

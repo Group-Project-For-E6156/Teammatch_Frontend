@@ -16,6 +16,7 @@ export class AccountComponent implements OnInit {
     "MISSING_INPUT": "You should have uni & firstname & lastname & password & email address filled!",
     "SUCCESS": "Thanks for the registration! You will receive an email to verify your account!",
     "DUPLICATED_UNI": "It seems that you have already registered with your uni/email!",
+    "MISSING_INPUT2": "You should have uni & password filled!",
   };
 
   // Fields in forms
@@ -85,6 +86,24 @@ export class AccountComponent implements OnInit {
     console.log("You click on create account!")
     if(this.uni === "" || this.first_name === "" || this.last_name === "" || this.password === "" || this.email_address === "") {
       curMessage = this.getMessage("MISSING_INPUT");
+    }
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.messageService.update("INPUT CORRECT!", "SUCCESS");
+  }
+
+  /** logIn:
+   * 1. Check if all necessary inputs are filled -> if not, display warning message
+   * 2. Connect to BE service and create a new Account: Show Result Message
+   * */
+  logIntoAccount(): void {
+    let curMessage = "";
+    console.log("You click on login account!")
+    if(this.uni === "" || this.password === "") {
+      curMessage = this.getMessage("MISSING_INPUT2");
     }
     if(curMessage !== "") {
       // there are some error when inputting fields
