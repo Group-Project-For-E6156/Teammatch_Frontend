@@ -1,0 +1,18 @@
+<head>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+  </head>
+
+<body>
+  <div class="alert alert-success" role="alert" *ngIf="messageService.type==='SUCCESS'">
+    {{messageService.message}}
+  </div>
+  <div class="alert alert-info" role="alert" *ngIf="messageService.type==='INFO'">
+    {{messageService.message}}
+  </div>
+  <div class="alert alert-warning" role="alert" *ngIf="messageService.type==='WARNING'">
+    {{messageService.message}}
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="messageService.type==='DANGER'">
+    {{messageService.message}}
+  </div>
+</body>
