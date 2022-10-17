@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from "../message.service";
+import { AccountService } from "../account.service";
+import {Account} from "./account";
 
 @Component({
   selector: 'app-account',
@@ -15,7 +17,7 @@ export class AccountComponent implements OnInit {
     "TO_REGISTER": "Required fields are: uni & firstname & lastname & password & email address!",
     "MISSING_INPUT": "You should have uni & firstname & lastname & password & email address filled!",
     "SUCCESS": "Thanks for the registration! You will receive an email to verify your account!",
-    "DUPLICATED_UNI": "It seems that you have already registered with your uni/email!",
+    "FAILED": "FAILED IN REGISTRATION:",
     "MISSING_INPUT2": "You should have uni & password filled!",
   };
 
@@ -30,6 +32,7 @@ export class AccountComponent implements OnInit {
 
   constructor(
     public messageService: MessageService,
+    public accountService: AccountService,
   ) {}
 
 
@@ -54,8 +57,10 @@ export class AccountComponent implements OnInit {
     this.email_address = "";
   }
 
-  changeForm(): void {
-    this.messageService.clear();
+  changeForm(changeMessage: boolean = true): void {
+    if(changeMessage) {
+      this.messageService.clear();
+    }
     this.clearFields();
     this.signUp = !this.signUp;
     this.logIn = !this.logIn;
@@ -74,7 +79,9 @@ export class AccountComponent implements OnInit {
       }
     }
     console.log(message);
-    this.messageService.update(message, "INFO");
+    if(changeMessage) {
+      this.messageService.update(message, "INFO");
+    }
   }
 
   /** createAccount:
@@ -92,7 +99,16 @@ export class AccountComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.messageService.update("INPUT CORRECT!", "SUCCESS");
+
+    this.accountService.addAccount(
+      this.uni, this.email_address, this.password, this.last_name, this.first_name, this.middle_name
+    ).subscribe((data) => {
+        console.log(this.accountService.addAccountSuccess);
+        if(this.accountService.addAccountSuccess) {
+          this.changeForm(false);
+        }
+      }
+    );
   }
 
   /** logIn:
@@ -110,6 +126,14 @@ export class AccountComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.messageService.update("INPUT CORRECT!", "SUCCESS");
+    this.accountService.getAccount(this.uni).subscribe(
+      (account) => {
+        if(account && account.password === this.password) {
+          this.messageService.update("Successfully log in!", "SUCCESS");
+        } else {
+          this.messageService.update("Failed Login: Check your UNI/password!", "DANGER");
+        }
+      }
+    )
   }
 }
