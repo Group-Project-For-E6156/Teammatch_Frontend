@@ -2,15 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import {Account} from "./account/account";
+import { MessageService } from "./message.service";
+import { AccountComponent } from "./account/account.component";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
-  accountServiceUrl: string = "http://127.0.0.1:2333/api/students/";
+  accountServiceUrl: string = "http://127.0.0.1:2333/students/";
+  addAccountSuccess: boolean = false;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private messageService: MessageService,
   ) { }
 
   /**
@@ -22,10 +26,22 @@ export class AccountService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-
-      // TODO: send the error to remote logging infrastructure
       console.error(error); // log to console instead
-
+      this.messageService.clear();
+      if(error.status == 200) {
+        let curMessage;
+        if(operation == "addAccount") {
+          curMessage = "Thanks for the registration! You will receive an email to verify your account!";
+          this.addAccountSuccess = true;
+        } else {
+          this.addAccountSuccess = false
+          curMessage = `${JSON.stringify(error.error.text)}`
+        }
+        this.messageService.update(curMessage, "SUCCESS");
+      } else {
+        this.addAccountSuccess = false
+        this.messageService.update(`${JSON.stringify(error.error)}`, "DANGER");
+      }
       // Let the app keep running by returning an empty result.
       return of(result as T);
     };
@@ -57,7 +73,6 @@ export class AccountService {
     if(middle_name !== "") {
       registerUrl += `&middle_name=${middle_name}`;
     }
-
     return this.http.get<any>(registerUrl).pipe(
       catchError(this.handleError<any>("addAccount")),
     );
