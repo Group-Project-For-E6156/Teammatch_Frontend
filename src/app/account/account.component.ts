@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from "../message.service";
 import { AccountService } from "../account.service";
-import {Account} from "./account";
 
 @Component({
   selector: 'app-account',
@@ -10,8 +9,8 @@ import {Account} from "./account";
 })
 export class AccountComponent implements OnInit {
   // For deciding which form to be displayed
-  signUp: boolean = true;
-  logIn: boolean = false;
+  signUpForm: boolean = true;
+  logInForm: boolean = false;
   messageDict = {
     "TO_LOGIN": "Please input your account uni and password!",
     "TO_REGISTER": "Required fields are: uni & firstname & lastname & password & email address!",
@@ -28,7 +27,6 @@ export class AccountComponent implements OnInit {
   last_name: string = "";
   password: string = "";
   email_address: string = "";
-
 
   constructor(
     public messageService: MessageService,
@@ -62,13 +60,13 @@ export class AccountComponent implements OnInit {
       this.messageService.clear();
     }
     this.clearFields();
-    this.signUp = !this.signUp;
-    this.logIn = !this.logIn;
+    this.signUpForm = !this.signUpForm;
+    this.logInForm = !this.logInForm;
     const registerForm = document.getElementById("register-form");
     const loginForm = document.getElementById("login-form")
     let message = "";
     if(registerForm != null && loginForm != null) {
-      if (this.signUp) {
+      if (this.signUpForm) {
         message = this.getMessage("TO_REGISTER")
         registerForm.style.display = "block";
         loginForm.style.display = "none";
@@ -102,7 +100,7 @@ export class AccountComponent implements OnInit {
 
     this.accountService.addAccount(
       this.uni, this.email_address, this.password, this.last_name, this.first_name, this.middle_name
-    ).subscribe((data) => {
+    ).subscribe((_) => {
         console.log(this.accountService.addAccountSuccess);
         if(this.accountService.addAccountSuccess) {
           this.changeForm(false);

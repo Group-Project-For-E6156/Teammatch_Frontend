@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
-import {Account} from "./account/account";
+import { Account } from "./account/account";
 import { MessageService } from "./message.service";
-import { AccountComponent } from "./account/account.component";
 
 @Injectable({
   providedIn: 'root'
