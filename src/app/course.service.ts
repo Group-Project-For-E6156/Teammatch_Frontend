@@ -42,7 +42,7 @@ export class CourseService {
 
     // This is some seriously bad code.
     // If you do this on a job interview, you did not learn this in my class.
-    result = "http://192.168.1.162:5011/";
+    result = "http://160.39.225.240:5011/";
     return result;
   }
 
@@ -52,7 +52,6 @@ export class CourseService {
     if (Coursename !== "") {
       courseUrl = this.getCourseServiceUrl() + `course/${Coursename}`;
     }
-    console.log(courseUrl);
     return this.http.get<Course>(courseUrl);
   }
   addCourse(
@@ -61,7 +60,6 @@ export class CourseService {
     let courseUrl: string = "";
     courseUrl = this.getCourseServiceUrl() + `course/add/course_name=${course_name}&department=${department}
                 &introduction=${introduction}`;
-    console.log(courseUrl);
     return this.http.get<any>(courseUrl).pipe(
       catchError(this.handleError<any>("addCourse")));
   }

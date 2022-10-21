@@ -53,10 +53,11 @@ export class CourseComponent implements OnInit {
   setCourseInfo(theCourse: Course): void {
     console.log("Students = \n" + JSON.stringify(theCourse, null, 2));
     this.CourseInfo = theCourse;
+    /**
     for (let a of this.CourseInfo){
       console.log(a.Course_id);
       console.log(a.Course_Name);
-    }
+    }**/
   }
 
   AddCourse(): void {

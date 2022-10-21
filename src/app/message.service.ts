@@ -12,8 +12,6 @@ export class MessageService {
     if(this.types.includes(type)) {
       this.message = message;
       this.type = type;
-      console.log(this.message);
-      console.log(this.type);
     }
   }
 

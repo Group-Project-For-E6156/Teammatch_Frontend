@@ -10,7 +10,7 @@ import { CourseComponent } from './Courses/course.component'
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { AccountProfileComponent } from './account-profile/account-profile.component';
-
+import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,7 +19,8 @@ import { AccountProfileComponent } from './account-profile/account-profile.compo
     AccountComponent,
     MessagesComponent,
     AccountProfileComponent,
-    CourseComponent
+    CourseComponent,
+    CoursepreferenceComponent
   ],
   imports: [
     BrowserModule,
