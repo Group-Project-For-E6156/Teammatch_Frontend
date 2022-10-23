@@ -26,13 +26,13 @@ export class CoursePreferenceService {
         this.messageService.update(currmessage, "SUCCESS");
       }
       else {
-        if (operation == "addCoursePreference" && error.error == "There already exist one account"){
+        if (operation == "addCoursePreference"){
           {
-            currmessage = "The preference already exists";
+            currmessage = error.error;
           }
         } else if (operation == "editCoursePreference" && error.error == "There already exist one account"){
-          currmessage = "The preference already exists";
-        } else if (operation == "deleteCoursePreference" && error.error == "There already exist one account"){
+          currmessage = "The preference does not exist";
+        } else if (operation == "deleteCoursePreference" && error.error == "No existed Preference is found!"){
           currmessage = "No existed Preference is found!";
         }
         this.messageService.update(currmessage, "WARNING");
@@ -49,7 +49,7 @@ export class CoursePreferenceService {
 
     // This is some seriously bad code.
     // If you do this on a job interview, you did not learn this in my class.
-    result = "http://160.39.225.240:5011/";
+    result = "http://127.0.0.1:5011/";
     return result;
   }
 

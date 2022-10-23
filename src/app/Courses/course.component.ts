@@ -18,7 +18,7 @@ export class CourseComponent implements OnInit {
     "SUCCESS": "Thanks for the registration! You will receive an email to verify your account!",
     "FAILED": "FAILED IN REGISTRATION:",
     "MISSING_INPUT2": "You should have uni & password filled!",
-    "STARTING": "Please fill in your course name, department and introduction."
+    "TO_REGISTER": "Please fill in all the blanks."
   };
   Course_id : number = 0;
   Course_Name_add: string = "";
@@ -34,8 +34,8 @@ export class CourseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let message = this.getMessage("STARTING");
-    this.messageService.update(message, "STARTING");
+    let message = this.getMessage("TO_REGISTER");
+    this.messageService.update(message, "INFO");
   }
   getMessage(type: string): string {
     return Object.entries(this.messageDict)
@@ -67,6 +67,7 @@ export class CourseComponent implements OnInit {
     }
     if(curMessage !== "") {
       // there are some error when inputting fields
+      console.log(curMessage);
       this.messageService.update(curMessage, "WARNING");
       return;
     }
@@ -76,7 +77,6 @@ export class CourseComponent implements OnInit {
   }
   CheckCourse(): void{
     let curMessage = "";
-    console.log(this.Course_Name_check);
     if(this.Course_Name_check === "") {
       curMessage = this.getMessage("MISSING_INPUT");
     }

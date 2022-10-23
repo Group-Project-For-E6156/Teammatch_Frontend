@@ -26,8 +26,9 @@ export class CourseService {
       }
       else {
           if (operation == "addCourse"){
-            if (error.error == "There already exist one account"){
-              currmessage = "There already exist one account";
+            if (error.error == "There already exist one course"){
+              console.log(111);
+              currmessage = "There already exist one course";
             }
       }
         this.messageService.update(currmessage, "WARNING");
@@ -42,7 +43,7 @@ export class CourseService {
 
     // This is some seriously bad code.
     // If you do this on a job interview, you did not learn this in my class.
-    result = "http://160.39.225.240:5011/";
+    result = "http://127.0.0.1:5011/";
     return result;
   }
 

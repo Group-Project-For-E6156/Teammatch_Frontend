@@ -27,7 +27,7 @@
   margin: 0 0 15px;
   padding: 15px;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 20px;
 }
 .form input {
   font-family: "Roboto", sans-serif;
@@ -102,7 +102,9 @@
 .container .info span .fa {
   color: #EF3B3A;
 }
-
+.table {
+  text-align: center;
+}
 body {
   background: #76b852; /* fallback for old browsers */
   background: rgb(141,194,111);

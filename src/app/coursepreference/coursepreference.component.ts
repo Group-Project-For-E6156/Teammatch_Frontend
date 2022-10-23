@@ -15,11 +15,19 @@ export class CoursepreferenceComponent implements OnInit {
     "FAILED": "FAILED IN SEARCH",
     "STARTING": "Please fill in all the information."
   };
-  uni: string = "";
-  Course_id: number = -1;
-  prefered_Dept: string = "";
-  prefered_Timezone: string = "";
-  prefered_message: string = "";
+  add_uni: string = "";
+  edit_uni: string = "";
+  delete_uni: string = "";
+  check_uni: string = "";
+  add_Course_id: number;
+  edit_Course_id: number;
+  delete_Course_id: number;
+  add_prefered_Dept: string = "";
+  add_prefered_Timezone: string = "";
+  add_prefered_message: string = "";
+  edit_prefered_Dept: string = "";
+  edit_prefered_Timezone: string = "";
+  edit_prefered_message: string = "";
   CoursePreferenceInfo: any;
   constructor(
     public messageService: MessageService,
@@ -38,25 +46,31 @@ export class CoursepreferenceComponent implements OnInit {
       .map(item => item[1])[0];
   }
   clearFields(): void {
-    this.uni = "";
-    this.prefered_Dept = "";
-    this.prefered_Timezone = ""
-    this.prefered_message = "";
-    this.Course_id = 0;
+    this.add_uni = "";
+    this.edit_uni = "";
+    this.delete_uni = "";
+    this.check_uni = "";
+    this.add_prefered_Dept = "";
+    this.add_prefered_Timezone = ""
+    this.edit_prefered_message = "";
+    this.add_prefered_message = "";
+    this.edit_prefered_Dept  = "";
+    this.edit_prefered_Timezone  = "";
+    this.add_Course_id = 0;
+    this.edit_Course_id = 0;
+    this.delete_Course_id = 0;
+
   }
 
   SetPreferenceInfo(thePreference: CoursePreference): void {
     console.log("Students = \n" + JSON.stringify(thePreference, null, 2));
     this.CoursePreferenceInfo = thePreference;
-     for (let a of this.CoursePreferenceInfo){
-      console.log(a.Course_id);
-      console.log(a.Course_Name);
-  }}
+}
 
   AddCoursePreference(): void {
     let curMessage = "";
-    if(this.uni === "" || this.Course_id === 0 || this.prefered_Dept === "" ||
-       this.prefered_Timezone === "" || this.prefered_message == "") {
+    if(this.add_uni === "" || this.add_Course_id === 0 || this.add_prefered_Dept === "" ||
+       this.add_prefered_Timezone === "" || this.add_prefered_message == "") {
       curMessage = this.getMessage("MISSING_INPUT");
     }
     if(curMessage !== "") {
@@ -65,14 +79,14 @@ export class CoursepreferenceComponent implements OnInit {
       return;
     }
     this.coursePreferenceService.addCoursePreference(
-      this.uni, this.Course_id, this.prefered_Dept, this.prefered_Timezone, this.prefered_message
+      this.add_uni, this.add_Course_id, this.add_prefered_Dept, this.add_prefered_Timezone, this.add_prefered_message
     ).subscribe((data) => {});
   }
 
   EditPreference(): void {
     let curMessage = "";
-    if(this.uni === "" || this.Course_id === 0 || this.prefered_Dept === "" ||
-      this.prefered_Timezone === "" || this.prefered_message == "") {
+    if(this.edit_uni === "" || this.edit_Course_id === 0 || this.edit_prefered_Dept === "" ||
+      this.edit_prefered_Timezone === "" || this.edit_prefered_message == "") {
       curMessage = this.getMessage("MISSING_INPUT");
     }
     if(curMessage !== "") {
@@ -81,14 +95,13 @@ export class CoursepreferenceComponent implements OnInit {
       return;
     }
     this.coursePreferenceService.editCoursePreference(
-      this.uni, this.Course_id, this.prefered_Dept, this.prefered_Timezone, this.prefered_message
+      this.edit_uni, this.edit_Course_id, this.edit_prefered_Dept, this.edit_prefered_Timezone, this.edit_prefered_message
     ).subscribe((data) => {});
   }
 
   DeletePreference(): void {
     let curMessage = "";
-    if(this.uni === "" || this.Course_id === 0 || this.prefered_Dept === "" ||
-      this.prefered_Timezone === "" || this.prefered_message == "") {
+    if(this.delete_uni === "" || this.delete_Course_id === 0) {
       curMessage = this.getMessage("MISSING_INPUT");
     }
     if(curMessage !== "") {
@@ -96,12 +109,12 @@ export class CoursepreferenceComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.coursePreferenceService.deleteCoursePreference(this.uni, this.Course_id).subscribe((data) => {});
+    this.coursePreferenceService.deleteCoursePreference(this.delete_uni, this.delete_Course_id).subscribe((data) => {});
   }
 
   CheckCoursePreference(): void{
     let curMessage = "";
-    if(this.uni === "") {
+    if(this.check_uni === "") {
       curMessage = this.getMessage("MISSING_INPUT");
     }
     if(curMessage !== "") {
@@ -109,7 +122,7 @@ export class CoursepreferenceComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.coursePreferenceService.getCoursePreferencebyuni(this.uni).
+    this.coursePreferenceService.getCoursePreferencebyuni(this.check_uni).
     subscribe((data) => this.SetPreferenceInfo(data));
   }
 

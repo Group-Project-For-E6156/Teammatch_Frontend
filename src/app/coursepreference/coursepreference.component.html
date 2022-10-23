@@ -1,66 +1,66 @@
 <div class="login-page">
   <div class="form">
     <form id="register-form">
-      <h1>Welcome to join Course Preference!</h1>
+      <h1>Welcome to join Teammatcher!</h1>
       <app-messages></app-messages>
       <h2>Add Preferences</h2>
       <div class="form-group form-inline">
         <label for="uni_create">uni</label>
-        <input id="uni_create" name = "input" type="text" [(ngModel)]="this.uni">
+        <input id="uni_create" name = "input" type="text" [(ngModel)]="this.add_uni">
       </div>
       <div class="form-group form-inline">
         <label for="Course_id_create">Course_id</label>
-        <input id="Course_id_create" name = "input2" type="text" [(ngModel)]="this.Course_id">
+        <input id="Course_id_create" name = "input2" type="text" [(ngModel)]="this.add_Course_id">
       </div>
       <div class="form-group form-inline">
         <label for="prefered_Dept_create">prefered_Dept</label>
-        <input id="prefered_Dept_create" name = "input3" type="text" [(ngModel)]="this.prefered_Dept">
+        <input id="prefered_Dept_create" name = "input3" type="text" [(ngModel)]="this.add_prefered_Dept">
       </div>
       <div class="form-group form-inline">
         <label for="prefered_Timezone_create">prefered_Timezone</label>
-        <input id="prefered_Timezone_create" name = "input4" type="text" [(ngModel)]="this.prefered_Timezone">
+        <input id="prefered_Timezone_create" name = "input4" type="text" [(ngModel)]="this.add_prefered_Timezone">
       </div>
       <div class="form-group form-inline">
         <label for="prefered_message_create">prefered_message</label>
-        <input id="prefered_message_create" name = "input5" type="text" [(ngModel)]="this.prefered_message">
+        <input id="prefered_message_create" name = "input5" type="text" [(ngModel)]="this.add_prefered_message">
       </div>
       <button (click)="AddCoursePreference()">Add Preference</button>
-      <h3>Edit Preference</h3>
+      <h2>Edit Preference</h2>
       <div class="form-group form-inline">
         <label for="uni_create1">uni</label>
-        <input id="uni_create1" name = "input6" type="text" [(ngModel)]="this.uni">
+        <input id="uni_create1" name = "input6" type="text" [(ngModel)]="this.edit_uni">
       </div>
       <div class="form-group form-inline">
         <label for="Course_id_create1">Course_id</label>
-        <input id="Course_id_create1" name = "input7" type="text" [(ngModel)]="this.Course_id">
+        <input id="Course_id_create1" name = "input7" type="text" [(ngModel)]="this.edit_Course_id">
       </div>
       <div class="form-group form-inline">
         <label for="prefered_Dept_create1">prefered_Dept</label>
-        <input id="prefered_Dept_create1" name = "input8" type="text" [(ngModel)]="this.prefered_Dept">
+        <input id="prefered_Dept_create1" name = "input8" type="text" [(ngModel)]="this.edit_prefered_Dept">
       </div>
       <div class="form-group form-inline">
         <label for="prefered_Timezone_create1">prefered_Timezone</label>
-        <input id="prefered_Timezone_create1" name = "input9" type="text" [(ngModel)]="this.prefered_Timezone">
+        <input id="prefered_Timezone_create1" name = "input9" type="text" [(ngModel)]="this.edit_prefered_Timezone">
       </div>
       <div class="form-group form-inline">
         <label for="prefered_message_create1">prefered_message</label>
-        <input id="prefered_message_create1" name = "input10" type="text" [(ngModel)]="this.prefered_message">
+        <input id="prefered_message_create1" name = "input10" type="text" [(ngModel)]="this.edit_prefered_message">
       </div>
       <button (click)="EditPreference()">Change Preference(Ensure you have one)</button>
-      <h4>Delete Preference</h4>
+      <h2>Delete Preference</h2>
       <div class="form-group form-inline">
         <label for="uni_create2">uni</label>
-        <input id="uni_create2" name = "input11" type="text" [(ngModel)]="this.uni">
+        <input id="uni_create2" name = "input11" type="text" [(ngModel)]="this.delete_uni">
       </div>
       <div class="form-group form-inline">
         <label for="Course_id_create2">Course_id</label>
-        <input id="Course_id_create2" name = "input12" type="text" [(ngModel)]="this.Course_id">
+        <input id="Course_id_create2" name = "input12" type="text" [(ngModel)]="this.delete_Course_id">
       </div>
       <button (click)="DeletePreference()">Delete Preference</button>
-      <h5>Check Preferences</h5>
+      <h2>Check Preferences</h2>
       <div class="form-group form-inline">
         <label for="uni">uni</label>
-        <input id="uni" name = "input6" type="text" [(ngModel)]="this.uni">
+        <input id="uni" name = "input13" type="text" [(ngModel)]="this.check_uni">
       </div>
       <button (click)="CheckCoursePreference()">Check Preference Information</button>
       <table class="table table-striped">
