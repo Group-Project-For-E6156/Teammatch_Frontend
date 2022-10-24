@@ -66,7 +66,10 @@
   color: #e8900a;
   text-decoration: none;
 }
-.form #login-form {
+.form #register-form {
+  display: none;
+}
+.form #profile-form {
   display: none;
 }
 .container {
@@ -102,7 +105,14 @@
 .container .info span .fa {
   color: #EF3B3A;
 }
-
+select {
+  width: 350px;
+  font-size: 15px;
+}
+option {
+  width: 350px;
+  font-size: 15px;
+}
 body {
   background: #76b852; /* fallback for old browsers */
   background: rgb(141,194,111);

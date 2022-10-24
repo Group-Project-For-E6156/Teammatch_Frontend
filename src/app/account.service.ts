@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import { Account } from "./account/account";
 import { MessageService } from "./message.service";
+import {Profile} from "./account/profile";
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class AccountService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.error(error); // log to console instead
+      // console.error(error); // log to console instead
       this.messageService.clear();
       if(error.status == 200) {
         let curMessage;
@@ -38,8 +39,14 @@ export class AccountService {
         }
         this.messageService.update(curMessage, "SUCCESS");
       } else {
-        this.addAccountSuccess = false
-        this.messageService.update(`${JSON.stringify(error.error)}`, "DANGER");
+        if (operation == 'addAccount') {
+          this.addAccountSuccess = false
+          this.messageService.update(`${JSON.stringify(error.error)}`, "DANGER");
+        } else if (operation == 'updateProfile') {
+          this.messageService.update(`${JSON.stringify(error.error)}`, "DANGER");
+        } else { // getProfile
+          // do nothing
+        }
       }
       // Let the app keep running by returning an empty result.
       return of(result as T);
@@ -74,6 +81,33 @@ export class AccountService {
     }
     return this.http.get<any>(registerUrl).pipe(
       catchError(this.handleError<any>("addAccount")),
+    );
+  }
+
+  /**
+   * Update student's profile
+   */
+  updateProfile(uni: string, timezone: string, major: string, gender: string, msg: string=""): Observable<any>  {
+    let profileUrl: string = this.accountServiceUrl + "profile/";
+    profileUrl += `uni=${uni}&timezone=${timezone}&major=${major}&gender=${gender}`;
+    if (msg !== "") {
+      profileUrl += `&msg=${msg}`;
+    }
+    return this.http.get<any>(profileUrl).pipe(
+        catchError(this.handleError<any>("updateProfile"))
+    );
+  }
+
+  /**
+   * Get Profile from the server
+   */
+  getProfile(uni=""): Observable<Profile> {
+    let profileUrl: string = this.accountServiceUrl + "profile/";
+    if(uni != ""){
+      profileUrl += `uni=${uni}`;
+    }
+    return this.http.get<Profile>(profileUrl).pipe(
+        catchError(this.handleError<any>("getProfile"))
     );
   }
 }
