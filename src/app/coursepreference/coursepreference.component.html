@@ -5,61 +5,30 @@
       <app-messages></app-messages>
       <h2>Add Preferences</h2>
       <div class="form-group form-inline">
-        <label for="uni_create">uni</label>
+        <label for="uni_create">UNI</label>
         <input id="uni_create" name = "input" type="text" [(ngModel)]="this.add_uni">
       </div>
       <div class="form-group form-inline">
-        <label for="Course_id_create">Course_id</label>
+        <label for="Course_id_create">Course ID</label>
         <input id="Course_id_create" name = "input2" type="text" [(ngModel)]="this.add_Course_id">
       </div>
       <div class="form-group form-inline">
-        <label for="prefered_Dept_create">prefered_Dept</label>
+        <label for="prefered_Dept_create">Teammates Department</label>
         <input id="prefered_Dept_create" name = "input3" type="text" [(ngModel)]="this.add_prefered_Dept">
       </div>
       <div class="form-group form-inline">
-        <label for="prefered_Timezone_create">prefered_Timezone</label>
+        <label for="prefered_Timezone_create">Teammates Timezone</label>
         <input id="prefered_Timezone_create" name = "input4" type="text" [(ngModel)]="this.add_prefered_Timezone">
       </div>
       <div class="form-group form-inline">
-        <label for="prefered_message_create">prefered_message</label>
+        <label for="prefered_message_create">Your message</label>
         <input id="prefered_message_create" name = "input5" type="text" [(ngModel)]="this.add_prefered_message">
       </div>
       <button (click)="AddCoursePreference()">Add Preference</button>
-      <h2>Edit Preference</h2>
-      <div class="form-group form-inline">
-        <label for="uni_create1">uni</label>
-        <input id="uni_create1" name = "input6" type="text" [(ngModel)]="this.edit_uni">
-      </div>
-      <div class="form-group form-inline">
-        <label for="Course_id_create1">Course_id</label>
-        <input id="Course_id_create1" name = "input7" type="text" [(ngModel)]="this.edit_Course_id">
-      </div>
-      <div class="form-group form-inline">
-        <label for="prefered_Dept_create1">prefered_Dept</label>
-        <input id="prefered_Dept_create1" name = "input8" type="text" [(ngModel)]="this.edit_prefered_Dept">
-      </div>
-      <div class="form-group form-inline">
-        <label for="prefered_Timezone_create1">prefered_Timezone</label>
-        <input id="prefered_Timezone_create1" name = "input9" type="text" [(ngModel)]="this.edit_prefered_Timezone">
-      </div>
-      <div class="form-group form-inline">
-        <label for="prefered_message_create1">prefered_message</label>
-        <input id="prefered_message_create1" name = "input10" type="text" [(ngModel)]="this.edit_prefered_message">
-      </div>
-      <button (click)="EditPreference()">Change Preference(Ensure you have one)</button>
-      <h2>Delete Preference</h2>
-      <div class="form-group form-inline">
-        <label for="uni_create2">uni</label>
-        <input id="uni_create2" name = "input11" type="text" [(ngModel)]="this.delete_uni">
-      </div>
-      <div class="form-group form-inline">
-        <label for="Course_id_create2">Course_id</label>
-        <input id="Course_id_create2" name = "input12" type="text" [(ngModel)]="this.delete_Course_id">
-      </div>
-      <button (click)="DeletePreference()">Delete Preference</button>
+      <hr>
       <h2>Check Preferences</h2>
       <div class="form-group form-inline">
-        <label for="uni">uni</label>
+        <label for="uni">UNI</label>
         <input id="uni" name = "input13" type="text" [(ngModel)]="this.check_uni">
       </div>
       <button (click)="CheckCoursePreference()">Check Preference Information</button>
@@ -70,6 +39,8 @@
           <th scope="col">course_id</th>
           <th scope="col">Department</th>
           <th scope="col">Timezone</th>
+          <th scope="col">Message</th>
+          <th>Operation</th>
         </tr>
         </thead>
         <tbody>
@@ -81,9 +52,55 @@
           <td>{{ p.prefered_Dept }}</td>
           <td>{{ p.prefered_Timezone }}</td>
           <td>{{ p.prefered_message }}</td>
+          <td>
+            <ul class="list-inline m-0">
+                <li class="list-inline-item">
+                    <button class="btn btn-success btn-sm rounded-0"
+                            type="button" data-toggle="tooltip" data-placement="top" title="Edit"
+                            (click)="setEditForm(p.uni, p.Course_id)"
+                    >
+                      <i class="fa fa-edit"></i>
+                    </button>
+                </li>
+                <li class="list-inline-item">
+                    <button class="btn btn-danger btn-sm rounded-0"
+                            type="button" data-toggle="tooltip" data-placement="top" title="Delete"
+                            (click)="DeletePreference(p.uni, p.Course_id, true)"
+                    >
+                      <i class="fa fa-trash"></i>
+                    </button>
+                </li>
+            </ul>
+          </td>
         </tr>
         </tbody>
       </table>
+      <hr>
+      <div *ngIf="this.edit_uni !=='' && this.edit_Course_id !== 0">
+        <h2>Edit Preference</h2>
+        <div class="form-group form-inline">
+          <label for="uni_create1">UNI</label>
+          <span id="uni_create1">{{this.edit_uni}}</span>
+        </div>
+        <div class="form-group form-inline">
+          <label for="Course_id_create1">Course ID</label>
+          <span id="Course_id_create1">{{this.edit_Course_id}}</span>
+        </div>
+        <div class="form-group form-inline">
+          <label for="prefered_Dept_create1">Teammates Department</label>
+          <input id="prefered_Dept_create1" name = "input8" type="text" [(ngModel)]="this.edit_prefered_Dept">
+        </div>
+        <div class="form-group form-inline">
+          <label for="prefered_Timezone_create1">Teammates Timezone</label>
+          <input id="prefered_Timezone_create1" name = "input9" type="text" [(ngModel)]="this.edit_prefered_Timezone">
+        </div>
+        <div class="form-group form-inline">
+          <label for="prefered_message_create1">Your Message</label>
+          <input id="prefered_message_create1" name = "input10" type="text" [(ngModel)]="this.edit_prefered_message">
+        </div>
+        <button (click)="EditPreference()">Modify Preference</button>
+        <hr>
+      </div>
       <p><button class="button1" style="background-color:#27682C" [routerLink]="['/courses']">
         Go to Course page
       </button></p>

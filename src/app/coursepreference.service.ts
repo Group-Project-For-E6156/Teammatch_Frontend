@@ -19,7 +19,6 @@ export class CoursePreferenceService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      console.log(error.error); // log to console instead
       let currmessage = "";
       if (error.status == 200){
         currmessage = "Your operation success";
@@ -28,7 +27,11 @@ export class CoursePreferenceService {
       else {
         if (operation == "addCoursePreference"){
           {
-            currmessage = error.error;
+            if(error.error === "The course has been created!") {
+              currmessage = "You have already added a preference for this course! You should go edit it!";
+            } else {
+              currmessage = error.error;
+            }
           }
         } else if (operation == "editCoursePreference" && error.error == "The preference does not exist"){
           currmessage = "The preference does not exist";
@@ -57,7 +60,7 @@ export class CoursePreferenceService {
     uni: string
   ): Observable<any> {
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${uni}/`;
+    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${uni}`;
     return this.http.get<CoursePreference>(courseUrl);
   }
 
@@ -89,5 +92,4 @@ export class CoursePreferenceService {
     return this.http.get<any>(courseUrl).pipe(
       catchError(this.handleError<any>("deleteCoursePreference")));
   }
-
 }
