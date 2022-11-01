@@ -26,11 +26,13 @@ export class CourseService {
       }
       else {
           if (operation == "addCourse"){
-            if (error.error == "There already exist one course"){
+            if (error.error == "There already exist one course") {
               console.log(111);
               currmessage = "There already exist one course";
             }
-      }
+          } else if (operation == "checkCourse") {
+            currmessage = "Cannot find the course you input!";
+          }
         this.messageService.update(currmessage, "WARNING");
       }
       // Let the app keep running by returning an empty result.
@@ -53,7 +55,9 @@ export class CourseService {
     if (Coursename !== "") {
       courseUrl = this.getCourseServiceUrl() + `course/${Coursename}`;
     }
-    return this.http.get<Course>(courseUrl);
+    return this.http.get<Course>(courseUrl).pipe(
+      catchError(this.handleError<any>("checkCourse"))
+    );
   }
 
   addCourse(
