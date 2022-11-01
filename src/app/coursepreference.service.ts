@@ -30,7 +30,7 @@ export class CoursePreferenceService {
           {
             currmessage = error.error;
           }
-        } else if (operation == "editCoursePreference" && error.error == "There already exist one account"){
+        } else if (operation == "editCoursePreference" && error.error == "The preference does not exist"){
           currmessage = "The preference does not exist";
         } else if (operation == "deleteCoursePreference" && error.error == "No existed Preference is found!"){
           currmessage = "No existed Preference is found!";
@@ -57,19 +57,20 @@ export class CoursePreferenceService {
     uni: string
   ): Observable<any> {
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${uni}`;
+    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${uni}/`;
     return this.http.get<CoursePreference>(courseUrl);
   }
+
   addCoursePreference(
     uni: string, course_id: number, prefered_Dept: string, prefered_Timezone: string, prefered_message: string
   ): Observable<any> {
     let courseUrl: string = "";
-
     courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/add/uni=${uni}&course_id=
     ${course_id}&timezone=${prefered_Timezone}&dept=${prefered_Dept}&message=${prefered_message}`;
     return this.http.get<any>(courseUrl).pipe(
       catchError(this.handleError<any>("addCoursePreference")));
   }
+
   editCoursePreference(
     uni: string, course_id: number, prefered_Dept: string, prefered_Timezone: string, prefered_message: string
   ): Observable<any> {
@@ -79,6 +80,7 @@ export class CoursePreferenceService {
     return this.http.get<any>(courseUrl).pipe(
       catchError(this.handleError<any>("editCoursePreference")));
   }
+
   deleteCoursePreference(
     uni: string, course_id: number
   ): Observable<any> {
