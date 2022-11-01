@@ -9,7 +9,6 @@ import { MessagesComponent } from './messages/messages.component';
 import { CourseComponent } from './Courses/course.component'
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
-import { AccountProfileComponent } from './account-profile/account-profile.component';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
 @NgModule({
   declarations: [
@@ -18,7 +17,6 @@ import { CoursepreferenceComponent } from './coursepreference/coursepreference.c
     AboutComponent,
     AccountComponent,
     MessagesComponent,
-    AccountProfileComponent,
     CourseComponent,
     CoursepreferenceComponent
   ],
