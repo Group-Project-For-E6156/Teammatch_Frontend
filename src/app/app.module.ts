@@ -11,6 +11,8 @@ import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
 import { NgxPaginationModule } from "ngx-pagination";
+import { TeamComponent } from './team/team.component';
+import { StudentinteamComponent } from './studentinteam/studentinteam.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { NgxPaginationModule } from "ngx-pagination";
     AccountComponent,
     MessagesComponent,
     CourseComponent,
-    CoursepreferenceComponent
+    CoursepreferenceComponent,
+    TeamComponent,
+    StudentinteamComponent
   ],
   imports: [
     BrowserModule,
