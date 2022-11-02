@@ -8,11 +8,6 @@ import { AccountService } from "../account.service";
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
-  // Show the current form (unnecessary???)
-  isSignUp: boolean = true;
-  isLogIn: boolean = false;
-  isProfile: boolean = false;
-
   messageDict = {
     "TO_LOGIN": "Please input your account uni and password!",
     "TO_REGISTER": "Required fields are: uni & firstname & lastname & password & email address!",
@@ -86,9 +81,6 @@ export class AccountComponent implements OnInit {
       // After user successfully log in, we want to keep fields info
       this.clearFields();
     }
-    this.isSignUp = toSignUp;
-    this.isLogIn = toLogIn;
-    this.isProfile = toProfile;
     const registerForm = document.getElementById("register-form");
     const loginForm = document.getElementById("login-form");
     const profileForm = document.getElementById("profile-form");
@@ -116,7 +108,7 @@ export class AccountComponent implements OnInit {
   }
 
   /**
-   * Load the profile page
+   * Load the student profile information
    */
   loadProfile(): void {
     this.accountService.getProfile(this.uni).subscribe(

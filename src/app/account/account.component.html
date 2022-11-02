@@ -59,27 +59,29 @@
       <div class="form-group form-inline">
         <label for="timezone">TIMEZONE</label>
         <select name="singleSelect" id="timezone" [(ngModel)]="this.timezone">
-          <option selected value="EST">EST</option>
-          <option value="PST">PST</option>
-          <option value="Other">Other</option>
+          <option selected value="est">Eastern EST</option>
+          <option selected value="cst">Central CST</option>
+          <option value="pst">Pacific PST</option>
+          <option value="other">Other</option>
         </select>
       </div>
       <div class="form-group form-inline">
         <label for="major">MAJOR</label>
         <select name="singleSelect" id="major" [(ngModel)]="this.major">
-          <option selected value="NA">Prefer Not to Say</option>
-          <option value="CS">Computer Science</option>
-          <option value="Stats">Statistics</option>
-          <option value="EE">Electrical Engineering</option>
-          <option value="DS">Data Science</option>
+          <option selected value="na">Prefer Not to Say</option>
+          <option value="cs">Computer Science</option>
+          <option value="stats">Statistics</option>
+          <option value="ee">Electrical Engineering</option>
+          <option value="ds">Data Science</option>
+          <option value="math">Mathematics</option>
         </select>
       </div>
       <div class="form-group form-inline">
         <label for="gender">GENDER</label>
         <select name="select" id="gender" [(ngModel)]="this.gender">
-          <option selected value="NA">Prefer Not to Say</option>
-          <option value="F">Female</option>
-          <option value="M">Male</option>
+          <option selected value="na">Prefer Not to Say</option>
+          <option value="f">Female</option>
+          <option value="m">Male</option>
         </select>
       </div>
       <div class="form-group form-inline">
