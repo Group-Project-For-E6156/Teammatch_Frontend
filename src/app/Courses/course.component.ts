@@ -14,11 +14,8 @@ import { Course } from './Course';
 export class CourseComponent implements OnInit {
 
   messageDict = {
-    "MISSING_INPUT": "You should have all blanks filled!",
-    "SUCCESS": "Thanks for the registration! You will receive an email to verify your account!",
-    "FAILED": "FAILED IN REGISTRATION:",
-    "MISSING_INPUT2": "You should have uni & password filled!",
-    "TO_REGISTER": "Please fill in all the blanks."
+    "ADD_COURSES": "You could add courses to database or check an existing course using name!",
+    "MISSING_INPUT": "You have missing fields!",
   };
   Course_id : number = 0;
   Course_Name_add: string = "";
@@ -34,7 +31,7 @@ export class CourseComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let message = this.getMessage("TO_REGISTER");
+    let message = this.getMessage("ADD_COURSES");
     this.messageService.update(message, "INFO");
   }
   getMessage(type: string): string {
@@ -53,11 +50,6 @@ export class CourseComponent implements OnInit {
   setCourseInfo(theCourse: Course): void {
     console.log("Students = \n" + JSON.stringify(theCourse, null, 2));
     this.CourseInfo = theCourse;
-    /**
-    for (let a of this.CourseInfo){
-      console.log(a.Course_id);
-      console.log(a.Course_Name);
-    }**/
   }
 
   AddCourse(): void {
@@ -75,6 +67,7 @@ export class CourseComponent implements OnInit {
       this.Course_Name_add, this.Department, this.CourseIntroduction
     ).subscribe((data) => {});
   }
+
   CheckCourse(): void{
     let curMessage = "";
     if(this.Course_Name_check === "") {
@@ -86,8 +79,8 @@ export class CourseComponent implements OnInit {
       return;
     }
     this.courseService.getCourseInfo(this.Course_Name_check).
-    subscribe((data) => this.setCourseInfo(data));
+    subscribe((data) => {
+      this.setCourseInfo(data);
+    });
   }
-
-
 }
