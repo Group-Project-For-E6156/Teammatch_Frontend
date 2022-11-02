@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { catchError, Observable, of} from 'rxjs';
+import { MessageService } from "../message.service";
+//import { TeamService } from "../team.service";
+//import { Team } from './team';
 
 @Component({
   selector: 'app-team',
@@ -7,9 +12,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TeamComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public messageService: MessageService,
+    //public courseService:  TeamService
+    ) {
+  }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
   }
 
 }
