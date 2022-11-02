@@ -10,6 +10,8 @@ import { CourseComponent } from './Courses/course.component'
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
+import { NgxPaginationModule } from "ngx-pagination";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +26,8 @@ import { CoursepreferenceComponent } from './coursepreference/coursepreference.c
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

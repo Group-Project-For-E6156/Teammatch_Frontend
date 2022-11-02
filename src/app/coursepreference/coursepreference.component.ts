@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from "../message.service";
 import { CoursePreferenceService } from "../coursepreference.service";
 import { CoursePreference } from './coursepreference';
@@ -28,7 +28,14 @@ export class CoursepreferenceComponent implements OnInit {
   edit_prefered_Dept: string = "";
   edit_prefered_Timezone: string = "";
   edit_prefered_message: string = "";
-  CoursePreferenceInfo: any;
+  CoursePreferenceInfo: CoursePreference[] = [];
+
+  /* pagination field */
+  page = 1;
+  count = 0;
+  pageSize = 3;
+  pageSizes = [3, 6, 9];
+
   constructor(
     public messageService: MessageService,
     public coursePreferenceService: CoursePreferenceService,
@@ -71,7 +78,7 @@ export class CoursepreferenceComponent implements OnInit {
     this.add_Course_id = 0;
   }
 
-  SetPreferenceInfo(thePreference: CoursePreference): void {
+  SetPreferenceInfo(thePreference: CoursePreference[]): void {
     console.log("Students = \n" + JSON.stringify(thePreference, null, 2));
     this.CoursePreferenceInfo = thePreference;
 }
@@ -117,7 +124,7 @@ export class CoursepreferenceComponent implements OnInit {
       this.edit_uni, this.edit_Course_id, this.edit_prefered_Dept, this.edit_prefered_Timezone, this.edit_prefered_message
     ).subscribe((data) => {
       this.setEditForm("", 0);
-      this.CoursePreferenceInfo = undefined;
+      this.CoursePreferenceInfo = [];
       this.CheckCoursePreference();
     });
   }
@@ -134,13 +141,22 @@ export class CoursepreferenceComponent implements OnInit {
     }
     this.coursePreferenceService.deleteCoursePreference(uni, course_id).subscribe(() => {
       if(check_form) { // refresh list
-        this.CoursePreferenceInfo = undefined;
+        this.CoursePreferenceInfo = [];
         this.CheckCoursePreference();
       }
     });
   }
 
+  getRequestParams(uni: string, page: number, pageSize: number): any {
+    let params: any = {};
+    params[`uni`] = uni;
+    params[`page`] = page-1;
+    params[`size`] = pageSize;
+    return params;
+  }
+
   CheckCoursePreference(): void{
+    // TODO: delete this method after testing backend API
     let curMessage = "";
     if(this.check_uni === "") {
       curMessage = this.getMessage("MISSING_INPUT");
@@ -151,7 +167,38 @@ export class CoursepreferenceComponent implements OnInit {
       return;
     }
     this.coursePreferenceService.getCoursePreferencebyuni(this.check_uni).
-    subscribe((data) => this.SetPreferenceInfo(data));
+    subscribe((data) => {
+      console.log(data);
+      this.CoursePreferenceInfo = [];
+      this.SetPreferenceInfo(data);
+    });
+  }
+
+  RetrieveCoursePreference(): void {
+    //TODO: Substitue CheckCoursePreference function in all script
+    const params = this.getRequestParams(this.check_uni, this.page, this.pageSize);
+    this.coursePreferenceService.retreiveCoursePreferenceByParams(params).subscribe(
+        response => {
+          const { coursePreferences, totalItems } = response;
+          this.CoursePreferenceInfo = [];
+          this.SetPreferenceInfo(coursePreferences);
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  handlePageChange(event: number): void {
+    this.page = event;
+    // this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
+  }
+
+  handlePageSizeChange(event: any): void {
+    this.pageSize = event.target.value;
+    this.page = 1;
+    // this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
   }
 
 }
