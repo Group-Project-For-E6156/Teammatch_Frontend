@@ -10,8 +10,8 @@ import { CourseComponent } from './Courses/course.component'
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
-import {MatPaginatorModule} from "@angular/material/paginator";
-import {MatTableModule} from "@angular/material/table";
+import { NgxPaginationModule } from "ngx-pagination";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,8 +27,7 @@ import {MatTableModule} from "@angular/material/table";
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    MatPaginatorModule,
-    MatTableModule
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

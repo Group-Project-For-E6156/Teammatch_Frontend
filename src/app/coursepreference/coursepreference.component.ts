@@ -1,6 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator } from "@angular/material/paginator";
-import {MatTableDataSource} from "@angular/material/table";
 import { MessageService } from "../message.service";
 import { CoursePreferenceService } from "../coursepreference.service";
 import { CoursePreference } from './coursepreference';
@@ -32,12 +30,11 @@ export class CoursepreferenceComponent implements OnInit {
   edit_prefered_message: string = "";
   CoursePreferenceInfo: CoursePreference[] = [];
 
-  // /**
-  //  * Fields for paginations
-  //  */
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  // displayedColumns = ['uni', 'Course_id', 'prefered_Dept', 'prefered_Timezone', 'prefered_message', 'operations'];
-  // dataSource: MatTableDataSource<CoursePreference>;
+  /* pagination field */
+  page = 1;
+  count = 0;
+  pageSize = 3;
+  pageSizes = [3, 6, 9];
 
   constructor(
     public messageService: MessageService,
@@ -50,8 +47,6 @@ export class CoursepreferenceComponent implements OnInit {
     this.messageService.clear();
     let message = this.getMessage("STARTING");
     this.messageService.update(message, "INFO");
-    // this.dataSource = new MatTableDataSource(this.CoursePreferenceInfo);
-    // this.dataSource.paginator = this.paginator;
   }
   getMessage(type: string): string {
     return Object.entries(this.messageDict)
@@ -86,7 +81,6 @@ export class CoursepreferenceComponent implements OnInit {
   SetPreferenceInfo(thePreference: CoursePreference[]): void {
     console.log("Students = \n" + JSON.stringify(thePreference, null, 2));
     this.CoursePreferenceInfo = thePreference;
-    // this.dataSource = new MatTableDataSource<CoursePreference>(this.CoursePreferenceInfo);
 }
 
   AddCoursePreference(): void {
@@ -153,7 +147,16 @@ export class CoursepreferenceComponent implements OnInit {
     });
   }
 
+  getRequestParams(uni: string, page: number, pageSize: number): any {
+    let params: any = {};
+    params[`uni`] = uni;
+    params[`page`] = page-1;
+    params[`size`] = pageSize;
+    return params;
+  }
+
   CheckCoursePreference(): void{
+    // TODO: delete this method after testing backend API
     let curMessage = "";
     if(this.check_uni === "") {
       curMessage = this.getMessage("MISSING_INPUT");
@@ -169,6 +172,33 @@ export class CoursepreferenceComponent implements OnInit {
       this.CoursePreferenceInfo = [];
       this.SetPreferenceInfo(data);
     });
+  }
+
+  RetrieveCoursePreference(): void {
+    //TODO: Substitue CheckCoursePreference function in all script
+    const params = this.getRequestParams(this.check_uni, this.page, this.pageSize);
+    this.coursePreferenceService.retreiveCoursePreferenceByParams(params).subscribe(
+        response => {
+          const { coursePreferences, totalItems } = response;
+          this.CoursePreferenceInfo = [];
+          this.SetPreferenceInfo(coursePreferences);
+          console.log(response);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  handlePageChange(event: number): void {
+    this.page = event;
+    // this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
+  }
+
+  handlePageSizeChange(event: any): void {
+    this.pageSize = event.target.value;
+    this.page = 1;
+    // this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
   }
 
 }
