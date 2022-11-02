@@ -10,6 +10,8 @@ import { CourseComponent } from './Courses/course.component'
 import { FormsModule } from "@angular/forms";
 import { HttpClientModule } from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatTableModule} from "@angular/material/table";
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +26,9 @@ import { CoursepreferenceComponent } from './coursepreference/coursepreference.c
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -37,6 +37,8 @@ export class CoursePreferenceService {
           currmessage = "The preference does not exist";
         } else if (operation == "deleteCoursePreference" && error.error == "No existed Preference is found!"){
           currmessage = "No existed Preference is found!";
+        } else {
+          currmessage = error.error;
         }
         this.messageService.update(currmessage, "WARNING");
       }
@@ -61,7 +63,9 @@ export class CoursePreferenceService {
   ): Observable<any> {
     let courseUrl: string = "";
     courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${uni}`;
-    return this.http.get<CoursePreference>(courseUrl);
+    return this.http.get<CoursePreference[]>(courseUrl).pipe(
+      catchError(this.handleError<CoursePreference[]>("getCoursePreferencebyuni"))
+    );
   }
 
   addCoursePreference(

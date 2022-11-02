@@ -76,6 +76,46 @@
         </tbody>
       </table>
       <hr>
+<!--      <div *ngIf="this.CoursePreferenceInfo !== []">-->
+<!--        <mat-table [dataSource]="dataSource">-->
+
+<!--          &lt;!&ndash; uni Column &ndash;&gt;-->
+<!--          <ng-container matColumnDef="uni">-->
+<!--            <mat-header-cell *matHeaderCellDef> UNI </mat-header-cell>-->
+<!--            <mat-cell *matCellDef="let row"> {{row.uni}} </mat-cell>-->
+<!--          </ng-container>-->
+
+<!--          &lt;!&ndash; Progress Column &ndash;&gt;-->
+<!--          <ng-container matColumnDef="Course_id">-->
+<!--            <mat-header-cell *matHeaderCellDef> Course ID </mat-header-cell>-->
+<!--            <mat-cell *matCellDef="let row"> {{row.Course_id}}% </mat-cell>-->
+<!--          </ng-container>-->
+
+<!--          &lt;!&ndash; Department Column &ndash;&gt;-->
+<!--          <ng-container matColumnDef="prefered_Dept">-->
+<!--            <mat-header-cell *matHeaderCellDef> Department </mat-header-cell>-->
+<!--            <mat-cell *matCellDef="let row"> {{row.prefered_Dept}} </mat-cell>-->
+<!--          </ng-container>-->
+
+<!--          &lt;!&ndash; timezone Column &ndash;&gt;-->
+<!--          <ng-container matColumnDef="prefered_Timezone">-->
+<!--            <mat-header-cell *matHeaderCellDef> Timezone </mat-header-cell>-->
+<!--            <mat-cell *matCellDef="let row"> {{row.prefered_Timezone}} </mat-cell>-->
+<!--          </ng-container>-->
+
+<!--          &lt;!&ndash; Message Column &ndash;&gt;-->
+<!--          <ng-container matColumnDef="prefered_message">-->
+<!--            <mat-header-cell *matHeaderCellDef> Message </mat-header-cell>-->
+<!--            <mat-cell *matCellDef="let row"> {{row.prefered_message}} </mat-cell>-->
+<!--          </ng-container>-->
+
+<!--          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
+<!--          <mat-row *matRowDef="let row; columns: displayedColumns;">-->
+<!--          </mat-row>-->
+<!--        </mat-table>-->
+
+<!--        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>-->
+<!--      </div>-->
       <div *ngIf="this.edit_uni !=='' && this.edit_Course_id !== 0">
         <h2>Edit Preference</h2>
         <div class="form-group form-inline">
