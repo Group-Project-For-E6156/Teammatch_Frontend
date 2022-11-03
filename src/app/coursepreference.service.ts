@@ -71,8 +71,11 @@ export class CoursePreferenceService {
   retreiveCoursePreferenceByParams(params: any): Observable<any> {
     // TODO: Maybe modify this function after implementing your API on BE
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/`;
-    return this.http.get<any>(courseUrl, {params});
+    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${params[`uni`]}/limit=${params[`size`]}&offset=${params[`size`]*params[`page`]}`;
+    console.log(courseUrl);
+    return this.http.get<CoursePreference[]>(courseUrl).pipe(
+      catchError(this.handleError<CoursePreference[]>("getCoursePreferencebyuni"))
+    );
   }
 
   addCoursePreference(

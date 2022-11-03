@@ -81,6 +81,8 @@ export class CoursepreferenceComponent implements OnInit {
   SetPreferenceInfo(thePreference: CoursePreference[]): void {
     console.log("Students = \n" + JSON.stringify(thePreference, null, 2));
     this.CoursePreferenceInfo = thePreference;
+    console.log(this.CoursePreferenceInfo);
+    console.log(this.page, this.pageSize, this.count);
 }
 
   AddCoursePreference(): void {
@@ -99,7 +101,7 @@ export class CoursepreferenceComponent implements OnInit {
     ).subscribe((data) => {
       this.clearAddFields();
       if(this.add_uni === this.check_uni) {
-        this.CheckCoursePreference();
+        this.RetrieveCoursePreference();
       }
     });
   }
@@ -125,7 +127,7 @@ export class CoursepreferenceComponent implements OnInit {
     ).subscribe((data) => {
       this.setEditForm("", 0);
       this.CoursePreferenceInfo = [];
-      this.CheckCoursePreference();
+      this.RetrieveCoursePreference();
     });
   }
 
@@ -142,7 +144,7 @@ export class CoursepreferenceComponent implements OnInit {
     this.coursePreferenceService.deleteCoursePreference(uni, course_id).subscribe(() => {
       if(check_form) { // refresh list
         this.CoursePreferenceInfo = [];
-        this.CheckCoursePreference();
+        this.RetrieveCoursePreference();
       }
     });
   }
@@ -177,12 +179,16 @@ export class CoursepreferenceComponent implements OnInit {
   RetrieveCoursePreference(): void {
     //TODO: Substitue CheckCoursePreference function in all script
     const params = this.getRequestParams(this.check_uni, this.page, this.pageSize);
+    console.log("paras is ", params);
+
     this.coursePreferenceService.retreiveCoursePreferenceByParams(params).subscribe(
         response => {
-          const { coursePreferences, totalItems } = response;
-          this.CoursePreferenceInfo = [];
+          const coursePreferences = response[1];
+          let totalItems = response[0];
+          console.log(coursePreferences);
+          this.CoursePreferenceInfo = coursePreferences;
+          this.count = totalItems;
           this.SetPreferenceInfo(coursePreferences);
-          console.log(response);
         },
         error => {
           console.log(error);
@@ -192,13 +198,13 @@ export class CoursepreferenceComponent implements OnInit {
 
   handlePageChange(event: number): void {
     this.page = event;
-    // this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
+    this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
   }
 
   handlePageSizeChange(event: any): void {
     this.pageSize = event.target.value;
     this.page = 1;
-    // this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
+    this.RetrieveCoursePreference(); //TODO: Uncomment this after implementing API
   }
 
 }

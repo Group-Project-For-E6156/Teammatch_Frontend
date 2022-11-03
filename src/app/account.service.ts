@@ -89,7 +89,7 @@ export class AccountService {
    */
   updateProfile(uni: string, timezone: string, major: string, gender: string, msg: string=""): Observable<any>  {
     let profileUrl: string = this.accountServiceUrl + "profile/";
-    profileUrl += `uni=${uni}&timezone=${timezone}&major=${major}&gender=${gender}`;
+    profileUrl += `${uni}/timezone=${timezone}&major=${major}&gender=${gender}`;
     if (msg !== "") {
       profileUrl += `&msg=${msg}`;
     }
@@ -102,10 +102,7 @@ export class AccountService {
    * Get Profile from the server
    */
   getProfile(uni=""): Observable<Profile> {
-    let profileUrl: string = this.accountServiceUrl + "profile/";
-    if(uni != ""){
-      profileUrl += `uni=${uni}`;
-    }
+    let profileUrl: string = this.accountServiceUrl + `profile/${uni}`;
     return this.http.get<Profile>(profileUrl).pipe(
         catchError(this.handleError<any>("getProfile"))
     );

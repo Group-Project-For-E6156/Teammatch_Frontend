@@ -13,12 +13,24 @@
         <input id="Course_id_create" name = "input2" type="text" [(ngModel)]="this.add_Course_id">
       </div>
       <div class="form-group form-inline">
-        <label for="prefered_Dept_create">Teammates Department</label>
-        <input id="prefered_Dept_create" name = "input3" type="text" [(ngModel)]="this.add_prefered_Dept">
+        <label for="prefered_Dept_create">Teammates Timezone</label>
+        <select name="singleSelect" id="prefered_Dept_create" [(ngModel)]="this.add_prefered_Timezone">
+          <option selected value="est">Eastern EST</option>
+          <option selected value="cst">Central CST</option>
+          <option value="pst">Pacific PST</option>
+          <option value="other">Other</option>
+        </select>
       </div>
       <div class="form-group form-inline">
-        <label for="prefered_Timezone_create">Teammates Timezone</label>
-        <input id="prefered_Timezone_create" name = "input4" type="text" [(ngModel)]="this.add_prefered_Timezone">
+        <label for="prefered_Timezone_create">Teammates Major</label>
+        <select name="singleSelect" id="prefered_Timezone_create" [(ngModel)]="this.add_prefered_Dept">
+          <option selected value="na">Prefer Not to Say</option>
+          <option value="cs">Computer Science</option>
+          <option value="stats">Statistics</option>
+          <option value="ee">Electrical Engineering</option>
+          <option value="ds">Data Science</option>
+          <option value="math">Mathematics</option>
+        </select>
       </div>
       <div class="form-group form-inline">
         <label for="prefered_message_create">Your message</label>
@@ -31,7 +43,7 @@
         <label for="uni">UNI</label>
         <input id="uni" name = "input13" type="text" [(ngModel)]="this.check_uni">
       </div>
-      <button (click)="CheckCoursePreference()">Check Preference Information</button>
+      <button (click)="RetrieveCoursePreference()">Check Preference Information</button>
       <table class="table table-striped" *ngIf="this.CoursePreferenceInfo !== []">
         <thead>
         <tr>
@@ -49,33 +61,32 @@
                 currentPage: this.page,
                 totalItems: this.count
               }">
-          <td>
-            {{ p.uni }}
-          </td>
-          <td>{{p.Course_id }}</td>
-          <td>{{ p.prefered_Dept }}</td>
-          <td>{{ p.prefered_Timezone }}</td>
-          <td>{{ p.prefered_message }}</td>
-          <td>
-            <ul class="list-inline m-0">
+            <td>
+              {{ p.uni }}
+            </td>
+            <td>{{ p.Course_id }}</td>
+            <td>{{ p.prefered_Dept }}</td>
+            <td>{{ p.prefered_Timezone }}</td>
+            <td>{{ p.prefered_message }}</td>
+            <td>
+              <ul class="list-inline m-0">
                 <li class="list-inline-item">
-                    <button class="btn btn-success btn-sm rounded-0"
-                            type="button" data-toggle="tooltip" data-placement="top" title="Edit"
-                            (click)="setEditForm(p.uni, p.Course_id)"
-                    >
-                      <i class="fa fa-edit"></i>
-                    </button>
+                  <button class="btn btn-success btn-sm rounded-0"
+                          type="button" data-toggle="tooltip" data-placement="top" title="Edit"
+                          (click)="setEditForm(p.uni, p.Course_id)">
+                    <i class="fa fa-edit"></i>
+                  </button>
                 </li>
                 <li class="list-inline-item">
-                    <button class="btn btn-danger btn-sm rounded-0"
-                            type="button" data-toggle="tooltip" data-placement="top" title="Delete"
-                            (click)="DeletePreference(p.uni, p.Course_id, true)"
-                    >
-                      <i class="fa fa-trash"></i>
-                    </button>
+                  <button class="btn btn-danger btn-sm rounded-0"
+                          type="button" data-toggle="tooltip" data-placement="top" title="Delete"
+                          (click)="DeletePreference(p.uni, p.Course_id, true)">
+                    <i class="fa fa-trash"></i>
+                  </button>
                 </li>
-            </ul>
-          </td>
+              </ul>
+            </td>
+
         </tr>
         </tbody>
       </table>
@@ -85,7 +96,7 @@
         <pagination-controls
           previousLabel="Prev"
           nextLabel="Next"
-          [responsive]="true"
+          [responsive]= "true"
           (pageChange)="this.handlePageChange($event)"
         ></pagination-controls>
       </div>
