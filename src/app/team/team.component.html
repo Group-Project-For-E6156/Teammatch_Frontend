@@ -1,1 +1,16 @@
-<p>team works!</p>
+<p></p> <br>
+<div class="login-page">
+    <div class="form">
+        <h1>Search Team from a Course!</h1> 
+        <app-messages></app-messages>
+        <p><button [routerLink]="['/courses']">
+            add or check course
+          </button></p>
+        <div class="form-group form-inline">
+            <label for="course_search">Course ID</label>
+            <input id="course_search" name = "input" type="text" [(ngModel)]="this.Course_id">
+            <button (click)="browseAllTeam()">Search</button>
+        </div>
+        <div *ngFor="let x of All_teams"></div>
+    </div>
+</div>

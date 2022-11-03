@@ -42,7 +42,7 @@ export class CourseComponent implements OnInit {
   clearFields(): void {
     this.Course_Name_add = "";
     this.CourseIntroduction = "";
-    this.Course_Name_check = ""
+    this.Course_Name_check = "";
     this.Department = "";
     this.Course_id = 0;
   }

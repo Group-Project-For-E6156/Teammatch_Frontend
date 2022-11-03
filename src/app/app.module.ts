@@ -12,7 +12,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
 import { NgxPaginationModule } from "ngx-pagination";
 import { TeamComponent } from './team/team.component';
-import { StudentinteamComponent } from './studentinteam/studentinteam.component';
+import { StudentinteamComponent } from './team/studentinteam/studentinteam.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { StudentinteamComponent } from './studentinteam/studentinteam.component'
     AppRoutingModule,
     FormsModule,
     NgxPaginationModule,
+    CommonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
