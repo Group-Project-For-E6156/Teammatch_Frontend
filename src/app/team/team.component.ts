@@ -25,12 +25,22 @@ export class TeamComponent implements OnInit {
     "SUCCESS": "The search is successful",
     "FAILED": "FAILED IN SEARCH"
   };
-  Course_id : number = 0;
-  Team_Name: string = "";
+
+  check_Course_id : number = 0;
+  add_Course_id : number = 0;
+  delete_Course_id = 0;
+  delete_team_id = 0;
+  edited_team_name: string = "";
+  edited_team_captain: string = "";
+  edited_team_id: number = 0;
+  edited_Course_id: number = 0;
+  edited_number_needed: number = -1;
+  edited_team_messages: string = "";
   Team_id: number = 0;
-  Team_message: string = "";
-  Number_needed: number = -1;
-  Team_Captain: string = "";
+  add_Team_Name: string = "";
+  add_Team_message: string = "";
+  add_Number_needed: number = -1;
+  add_Team_Captain: string = "";
   All_teams: Team[];
   currentWholeUrl : string;
 
@@ -49,7 +59,7 @@ export class TeamComponent implements OnInit {
 
   browseAllTeam(): void{
     let curMessage = "";
-    if(!this.Course_id) {
+    if(!this.check_Course_id) {
       curMessage = this.getMessage("MISSING_INPUT");
     }
     if(curMessage !== "") {
@@ -57,7 +67,7 @@ export class TeamComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.TeamService.browse_all_team(this.Course_id).subscribe(
+    this.TeamService.browse_all_team(this.check_Course_id).subscribe(
       res=>{
         this.All_teams=res;
         console.log(this.All_teams);
@@ -67,12 +77,8 @@ export class TeamComponent implements OnInit {
 
   addteam(): void{
     let curMessage = "";
-    console.log("this.Course_id: ", this.Course_id);
-    console.log("this.Team_Name: ", this.Team_message);
-    console.log("this.Team_message: ", this.Number_needed);
-    console.log("this.Team_Captain: ", this.Team_Captain);
-    if( this.Course_id === 0  || this.Team_Name === "" || this.Team_message === ""
-      || this.Number_needed === -1 || this.Team_Captain === "") {
+    if( this.add_Course_id === 0  || this.add_Team_Name === "" || this.add_Team_message === ""
+      || this.add_Number_needed === -1 || this.add_Team_Captain === "") {
       curMessage = this.getMessage("MISSING_INPUT");
     }
     if(curMessage !== "") {
@@ -80,8 +86,54 @@ export class TeamComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.TeamService.add_team(this.Course_id, this.Team_Name, this.Team_message, this.Number_needed, this.Team_Captain
+    this.TeamService.add_team(this.add_Course_id, this.add_Team_Name, this.add_Team_message, this.add_Number_needed,
+      this.add_Team_Captain
     ).subscribe(()=>{});
+  }
+
+
+  DeleteTeam(team_id= this.delete_team_id, course_id= this.delete_Course_id, check_form=false): void {
+    let curMessage = "";
+    if(team_id === 0 || course_id === 0) {
+      curMessage = this.getMessage("MISSING_INPUT");
+    }
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.delete_team(team_id, course_id).subscribe(() => {
+      if(check_form) { // refresh list
+        this.All_teams = [];
+        this.browseAllTeam();
+      }
+    });
+  }
+
+  setEditForm(team_id: number, course_id: number): void {
+    this.edited_team_id = team_id;
+    this.edited_Course_id = course_id;
+  }
+
+  EditPreference(): void {
+    let curMessage = "";
+    if(this.edited_team_name === "" || this.edited_Course_id === 0 || this.edited_team_captain === "" ||
+      this.edited_team_id === 0 || this.edited_number_needed == -1 || this.edited_team_messages == "") {
+      curMessage = this.getMessage("MISSING_INPUT");
+    }
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.edit_team(
+      this.edited_team_name, this.edited_Course_id, this.edited_team_captain,
+      this.edited_team_id, this.edited_number_needed, this.edited_team_messages
+    ).subscribe((data) => {
+      this.setEditForm(0, 0);
+      this.All_teams = [];
+      this.browseAllTeam();
+    });
   }
 
 

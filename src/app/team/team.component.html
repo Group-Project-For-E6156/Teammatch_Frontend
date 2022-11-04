@@ -8,7 +8,7 @@
           </button></p>
         <div class="form-group form-inline">
             <label for="course_search">Course ID</label>
-            <input id="course_search" name = "input" type="text" [(ngModel)]="this.Course_id">
+            <input id="course_search" name = "input" type="text" [(ngModel)]="this.check_Course_id">
             <button (click)="browseAllTeam()">Search all Teams</button>
           <table class="table table-striped">
             <thead>
@@ -29,31 +29,79 @@
               <td>{{ x.Team_message }}</td>
               <td>{{ x.Number_needed }}</td>
               <td>{{ x.Team_Captain }}</td>
+              <td>
+                <ul class="list-inline m-0">
+                  <li class="list-inline-item">
+                    <button class="btn btn-success btn-sm rounded-0"
+                            type="button" data-toggle="tooltip" data-placement="top" title="Edit"
+                            (click)="setEditForm(x.Team_id, x.Course_id)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                  </li>
+                  <li class="list-inline-item">
+                    <button class="btn btn-danger btn-sm rounded-0"
+                            type="button" data-toggle="tooltip" data-placement="top" title="Delete"
+                            (click)="DeleteTeam(x.Team_id, x.Course_id, true)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </li>
+                </ul>
+              </td>
             </tr>
             </tbody>
           </table>
         </div>
+      <hr>
+      <div *ngIf="this.edited_team_id !== 0 && this.edited_Course_id !== 0">
+        <h2>Edit Preference</h2>
+        <div class="form-group form-inline">
+          <label for="id_create1">Team ID</label>
+          <span id="id_create1">{{this.edited_team_id}}</span>
+        </div>
+        <div class="form-group form-inline">
+          <label for="Course_id_create1">Course ID</label>
+          <span id="Course_id_create1">{{this.edited_Course_id}}</span>
+        </div>
+        <div class="form-group form-inline">
+          <label for="team_create1">Team Name</label>
+          <input id="team_create1" name = "input8" type="text" [(ngModel)]="this.edited_team_name">
+        </div>
+        <div class="form-group form-inline">
+          <label for="captain_create1">Team Captain</label>
+          <input id="captain_create1" name = "input9" type="text" [(ngModel)]="this.edited_team_captain">
+        </div>
+        <div class="form-group form-inline">
+          <label for="num_create1">Number Needed</label>
+          <input id="num_create1" name = "input10" type="text" [(ngModel)]="this.edited_number_needed">
+        </div>
+        <div class="form-group form-inline">
+          <label for="prefered_message_create1">Messages</label>
+          <input id="prefered_message_create1" name = "input10" type="text" [(ngModel)]="this.edited_team_messages">
+        </div>
+        <button (click)="EditPreference()">Modify Preference</button>
+        <hr>
+      </div>
       <div class="form-group form-inline">
         <h2>Add Team</h2>
         <div class="form-group form-inline">
           <label for="course">Course id</label>
-          <input id="course" name = "input1" type="text" [(ngModel)]="this.Course_id">
+          <input id="course" name = "input1" type="text" [(ngModel)]="this.add_Course_id">
         </div>
         <div class="form-group form-inline">
           <label for="team_create">Team Name</label>
-          <input id="team_create" name = "input2" type="text" [(ngModel)]="this.Team_Name">
+          <input id="team_create" name = "input2" type="text" [(ngModel)]="this.add_Team_Name">
         </div>
         <div class="form-group form-inline">
           <label for="message_create">Team Message</label>
-          <input id="message_create" name = "input3" type="text" [(ngModel)]="this.Team_message">
+          <input id="message_create" name = "input3" type="text" [(ngModel)]="this.add_Team_message">
         </div>
         <div class="form-group form-inline">
           <label for="Number">Number Need</label>
-          <input id="Number" name = "input4" type="text" [(ngModel)]="this.Number_needed">
+          <input id="Number" name = "input4" type="text" [(ngModel)]="this.add_Number_needed">
         </div>
         <div class="form-group form-inline">
           <label for="Captain">Captain</label>
-          <input id="Captain" name = "input5" type="text" [(ngModel)]="this.Team_Captain">
+          <input id="Captain" name = "input5" type="text" [(ngModel)]="this.add_Team_Captain">
         </div>
         <button (click)="addteam()">Add Team</button>
       </div>
