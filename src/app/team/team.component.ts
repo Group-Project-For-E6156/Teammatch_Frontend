@@ -25,15 +25,19 @@ export class TeamComponent implements OnInit {
     "SUCCESS": "The search is successful",
     "FAILED": "FAILED IN SEARCH"
   };
-
-  Course_id : number;
-  All_teams: [];
+  Course_id : number = 0;
+  Team_Name: string = "";
+  Team_id: number = 0;
+  Team_message: string = "";
+  Number_needed: number = -1;
+  Team_Captain: string = "";
+  All_teams: Team[];
   currentWholeUrl : string;
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     let message = this.getMessage("Select_Course");
     this.messageService.update(message, "INFO");
-    this.currentWholeUrl = document.URL; 
+    this.currentWholeUrl = document.URL;
   }
 
   getMessage(type: string): string {
@@ -42,9 +46,6 @@ export class TeamComponent implements OnInit {
       .map(item => item[1])[0];
   }
 
-  clearFields(): void {
-    this.Course_id;
-  }
 
   browseAllTeam(): void{
     let curMessage = "";
@@ -62,6 +63,25 @@ export class TeamComponent implements OnInit {
         console.log(this.All_teams);
       }
     )
+  }
+
+  addteam(): void{
+    let curMessage = "";
+    console.log("this.Course_id: ", this.Course_id);
+    console.log("this.Team_Name: ", this.Team_message);
+    console.log("this.Team_message: ", this.Number_needed);
+    console.log("this.Team_Captain: ", this.Team_Captain);
+    if( this.Course_id === 0  || this.Team_Name === "" || this.Team_message === ""
+      || this.Number_needed === -1 || this.Team_Captain === "") {
+      curMessage = this.getMessage("MISSING_INPUT");
+    }
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.add_team(this.Course_id, this.Team_Name, this.Team_message, this.Number_needed, this.Team_Captain
+    ).subscribe(()=>{});
   }
 
 

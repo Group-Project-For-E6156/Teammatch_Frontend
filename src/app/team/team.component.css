@@ -54,16 +54,6 @@
   transition: all 0.3 ease;
   cursor: pointer;
 }
-.form button1 {
-  border: none;
-  outline: 0;
-  display: inline-block;
-  padding: 8px;
-  color: white;
-  background-color: #000;
-  text-align: center;
-  cursor: pointer;
-}
 .form button:hover,.form button:active,.form button:focus {
   background: #e8900a;
 }
@@ -123,3 +113,4 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+

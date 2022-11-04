@@ -1,7 +1,7 @@
 <p></p> <br>
 <div class="login-page">
     <div class="form">
-        <h1>Search Team from a Course!</h1> 
+        <h1>Search Team from a Course!</h1>
         <app-messages></app-messages>
         <p><button [routerLink]="['/courses']">
             add or check course
@@ -9,8 +9,53 @@
         <div class="form-group form-inline">
             <label for="course_search">Course ID</label>
             <input id="course_search" name = "input" type="text" [(ngModel)]="this.Course_id">
-            <button (click)="browseAllTeam()">Search</button>
+            <button (click)="browseAllTeam()">Search all Teams</button>
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Team ID</th>
+              <th scope="col">Team_message</th>
+              <th scope="col">Number Needed</th>
+              <th scope="col">Captain uni</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let x of All_teams">
+              <td>
+                {{ x.Team_Name }}
+              </td>
+              <td>{{ x.Team_id }}</td>
+              <td>{{ x.Team_message }}</td>
+              <td>{{ x.Number_needed }}</td>
+              <td>{{ x.Team_Captain }}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
-        <div *ngFor="let x of All_teams"></div>
+      <div class="form-group form-inline">
+        <h2>Add Team</h2>
+        <div class="form-group form-inline">
+          <label for="course">Course id</label>
+          <input id="course" name = "input1" type="text" [(ngModel)]="this.Course_id">
+        </div>
+        <div class="form-group form-inline">
+          <label for="team_create">Team Name</label>
+          <input id="team_create" name = "input2" type="text" [(ngModel)]="this.Team_Name">
+        </div>
+        <div class="form-group form-inline">
+          <label for="message_create">Team Message</label>
+          <input id="message_create" name = "input3" type="text" [(ngModel)]="this.Team_message">
+        </div>
+        <div class="form-group form-inline">
+          <label for="Number">Number Need</label>
+          <input id="Number" name = "input4" type="text" [(ngModel)]="this.Number_needed">
+        </div>
+        <div class="form-group form-inline">
+          <label for="Captain">Captain</label>
+          <input id="Captain" name = "input5" type="text" [(ngModel)]="this.Team_Captain">
+        </div>
+        <button (click)="addteam()">Add Team</button>
+      </div>
     </div>
 </div>
