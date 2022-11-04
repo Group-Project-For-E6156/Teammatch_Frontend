@@ -67,28 +67,28 @@ export class TeamService {
     }
 
   add_team(
-    course_id: number, team_name: string, team_message: string,  number_needed: number, team_captain: string
+    course_id: number, team_name: string, team_message: string,  number_needed: number, team_captain: string, team_captain_uni: string
   ): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl()  + `team/add/team_name=${team_name}&team_captain=${team_captain}&course_id=${course_id}&number_needed=${number_needed}&team_message=${team_message}`;
+    teamUrl = this.getTeamServiceUrl()  + `team/add/team_name=${team_name}&team_captain_uni=${team_captain_uni}&team_captain=${team_captain}&course_id=${course_id}&number_needed=${number_needed}&team_message=${team_message}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("addteam")));
   }
 
   delete_team(
-    team_id: number, course_id: number
+    team_id: number, course_id: number, team_captain_uni: string
   ): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/delete/team_id=${team_id}&course_id=${course_id}`;
+    teamUrl = this.getTeamServiceUrl() + `team/delete/team_id=${team_id}&team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("deleteteam")));
   }
 
   edit_team(
-    team_name: string, course_id: number, team_captain: string, team_id: number,  number_needed: number, team_message: string
+    team_name: string, course_id: number, team_captain: string, team_id: number,  number_needed: number, team_message: string,team_captain_uni: string
   ): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/edit/team_name=${team_name}&team_captain=${team_captain}&course_id=${course_id}&number_needed=${number_needed}&team_message=${team_message}`;
+    teamUrl = this.getTeamServiceUrl() + `team/edit/team_name=${team_name}&team_captain_uni=${team_captain_uni}&team_captain=${team_captain}&course_id=${course_id}&number_needed=${number_needed}&team_message=${team_message}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("editteam")));
   }
