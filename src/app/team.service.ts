@@ -57,10 +57,10 @@ export class TeamService {
       return result;
     }
 
-  browse_all_team(Course_id: number): Observable<any> {
+  retrieve_all_team_by_params(params: any): Observable<any> {
     let teamUrl: string = "";
-    if (Course_id) {
-      teamUrl = this.getTeamServiceUrl() + `team/course_id=${Course_id}`;
+    if (params[`course_id`]) {
+      teamUrl = this.getTeamServiceUrl() + `team/course_id=${params[`course_id`]}/limit=${params[`size`]}&offset=${params[`size`]*params[`page`]}`;
     }
     console.log(teamUrl);
     return this.http.get(teamUrl).pipe(catchError(this.handleError<any>("SearchTeam")));

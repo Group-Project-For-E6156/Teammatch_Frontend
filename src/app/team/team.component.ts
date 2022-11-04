@@ -51,6 +51,12 @@ export class TeamComponent implements OnInit {
   All_teams: Team[];
   currentWholeUrl : string;
 
+  /* pagination field */
+  page = 1;
+  count = 0;
+  pageSize = 3;
+  pageSizes = [3, 6, 9];
+
   ngOnInit(): void {
     let message = this.getMessage("Select_Course");
     this.messageService.update(message, "INFO");
@@ -70,27 +76,36 @@ export class TeamComponent implements OnInit {
       .filter(item => item[0] == type)
       .map(item => item[1])[0];
   }
-
+  getRequestParams(course_id: number, page: number, pageSize: number): any {
+    let params: any = {};
+    params[`course_id`] = course_id;
+    params[`page`] = page-1;
+    params[`size`] = pageSize;
+    return params;
+  }
   showContentSearch() {
     this.search_click = true;
     this.add_click = false;
     this.edit_click = false;
   }
 
-  browseAllTeam(): void{
+  RetrieveAllTeam(): void{
     let curMessage = "";
     if(!this.check_Course_id) {
       curMessage = this.getMessage("MISSING_INPUT");
     }
+    const params = this.getRequestParams(this.check_Course_id, this.page, this.pageSize);
+    console.log("paras is ", params);
     if(curMessage !== "") {
       // there are some error when inputting fields
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.TeamService.browse_all_team(this.check_Course_id).subscribe(
+    this.TeamService.retrieve_all_team_by_params(params).subscribe(
       res=>{
-        this.All_teams=res;
-        console.log(this.All_teams);
+        let totalItems = res[0];
+        this.All_teams=res[1];
+        this.count = totalItems;
       }
     )
   }
@@ -124,7 +139,7 @@ export class TeamComponent implements OnInit {
     this.TeamService.delete_team(team_id, course_id, team_captain_uni).subscribe(() => {
       if(check_form) { // refresh list
         this.All_teams = [];
-        this.browseAllTeam();
+        this.RetrieveAllTeam();
       }
     });
   }
@@ -158,8 +173,19 @@ export class TeamComponent implements OnInit {
     ).subscribe((data) => {
       this.setEditForm(0, 0, "", "", "", 0, "");
       this.All_teams = [];
-      this.browseAllTeam();
+      this.RetrieveAllTeam();
     });
+  }
+
+  handlePageChange(event: number): void {
+    this.page = event;
+    this.RetrieveAllTeam(); //TODO: Uncomment this after implementing API
+  }
+
+  handlePageSizeChange(event: any): void {
+    this.pageSize = event.target.value;
+    this.page = 1;
+    this.RetrieveAllTeam(); //TODO: Uncomment this after implementing API
   }
 
 
