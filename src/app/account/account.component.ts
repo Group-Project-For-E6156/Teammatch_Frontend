@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from "../message.service";
 import { AccountService } from "../account.service";
+import {StorageService} from "../storage.service";
 
 @Component({
   selector: 'app-account',
@@ -34,15 +35,30 @@ export class AccountComponent implements OnInit {
   gender: string = "";
   msg: string = "";
 
+  // Fields to record current status
+  isLoggedIn = false;
+
   constructor(
       public messageService: MessageService,
       public accountService: AccountService,
+      public storageService: StorageService,
   ) {}
 
 
   ngOnInit(): void {
     let message = this.getMessage("TO_REGISTER");
     this.messageService.update(message, "INFO");
+    if (this.storageService.isLoggedIn()) {
+      this.isLoggedIn = true;
+      // direct to account profile page
+      let user = this.storageService.getUser();
+      this.uni = user.uni;
+      this.first_name = user.first_name;
+      this.last_name = user.last_name;
+      this.email_address = user.email_address;
+      console.log("Initialize loggedin", this.uni, this.first_name);
+      this.changeForm(false, false, true);
+    }
   }
 
   /** Use message type to get message from message dict - only one output */
@@ -174,6 +190,9 @@ export class AccountComponent implements OnInit {
             this.last_name = account.last_name;
             this.middle_name = account.middle_name;
             this.email_address = account.email;
+            // remember to storage
+            this.storageService.saveUser(account);
+            console.log(this.storageService.getUser());
             this.changeForm(false,false,true);
           } else {
             this.messageService.update("Failed Login: Check your UNI/password!", "DANGER");
@@ -187,7 +206,7 @@ export class AccountComponent implements OnInit {
    */
   updateProfile(): void {
     let warning = "";
-    console.log("current user:", this.uni, this.timezone, this.major);
+    console.log("current user:", this.uni, this.timezone, this.major, this.first_name);
     if (this.timezone === "" || this.major === "" || this.gender === "") {
       warning = this.getMessage("MISSING_INPUT_PROFILE");
       this.messageService.update(warning, "WARNING");
@@ -198,5 +217,15 @@ export class AccountComponent implements OnInit {
           this.messageService.update(this.getMessage("SUCCESS_UPDATE_PROFILE"), "SUCCESS");
         }
     );
+  }
+
+  /**
+   * Log out of the account
+   */
+  logOut(): void {
+    this.storageService.clean();
+    this.clearFields();
+    this.isLoggedIn = false;
+    window.location.reload();
   }
 }
