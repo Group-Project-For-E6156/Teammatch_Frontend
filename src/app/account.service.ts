@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import { Account } from "./account/account";
 import { MessageService } from "./message.service";
@@ -56,13 +56,13 @@ export class AccountService {
   /** Get Account from the server
    * */
   getAccount(uni="", email=""): Observable<Account> {
-    let accountUrl: string = "";
+    let accountUrl: string = this.accountServiceUrl + "account";
     if(uni != "" && email != ""){
-      accountUrl = this.accountServiceUrl + `uni=${uni}&email=${email}`;
+      accountUrl += `?uni=${uni}&email=${email}`;
     } else if(uni != "") {
-      accountUrl = this.accountServiceUrl + `uni=${uni}`;
+      accountUrl += `?uni=${uni}`;
     } else if(email != "") {
-      accountUrl = this.accountServiceUrl + `email=${email}`;
+      accountUrl += `?email=${email}`;
     }
     return this.http.get<Account>(accountUrl).pipe(
       catchError(this.handleError<Account>("getAccount")),
@@ -74,12 +74,16 @@ export class AccountService {
   addAccount(
     uni: string, email: string, pwd: string, last_name: string, first_name: string, middle_name=""
   ): Observable<any> {
-    let registerUrl: string = this.accountServiceUrl + "upload/";
-    registerUrl += `uni=${uni}&email=${email}&password=${pwd}&last_name=${last_name}&first_name=${first_name}`;
-    if(middle_name !== "") {
-      registerUrl += `&middle_name=${middle_name}`;
-    }
-    return this.http.get<any>(registerUrl).pipe(
+    let registerUrl: string = this.accountServiceUrl + "signup";
+    let request: any = {
+      uni: uni,
+      email: email,
+      password: pwd,
+      last_name: last_name,
+      first_name: first_name,
+      middle_name: middle_name
+    };
+    return this.http.post<any>(registerUrl, request).pipe(
       catchError(this.handleError<any>("addAccount")),
     );
   }
