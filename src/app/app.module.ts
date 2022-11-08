@@ -14,10 +14,13 @@ import { NgxPaginationModule } from "ngx-pagination";
 import { TeamComponent } from './team/team.component';
 import { StudentinteamComponent } from './team/studentinteam/studentinteam.component';
 import { CommonModule } from '@angular/common';
+import {AccountProfileComponent} from "./account-profile/account-profile.component";
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AccountProfileComponent,
     NavbarComponent,
     AboutComponent,
     AccountComponent,
@@ -25,7 +28,8 @@ import { CommonModule } from '@angular/common';
     CourseComponent,
     CoursepreferenceComponent,
     TeamComponent,
-    StudentinteamComponent
+    StudentinteamComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
