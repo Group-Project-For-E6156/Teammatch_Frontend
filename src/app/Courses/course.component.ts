@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { catchError, Observable, of} from 'rxjs';
 import { MessageService } from "../message.service";
 import { CourseService } from "../course.service";
 import { Course } from './Course';
