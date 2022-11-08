@@ -3,7 +3,9 @@ import { NgForm } from '@angular/forms';
 import { catchError, Observable, of} from 'rxjs';
 import { MessageService } from "../message.service";
 import { TeamService } from "../team.service";
+import { StudentinTeamService} from "../studentinteam.service"
 import { Team } from './team';
+import { StudentInTeam} from './studentinteam/studentinteam'
 
 @Component({
   selector: 'app-team',
@@ -35,10 +37,10 @@ export class TeamComponent implements OnInit {
   edited_team_id: number = 0;
   edited_Course_id: number = 0;
   edited_number_needed: number = 0;
-  edited_team_messages: string = " ";
+  edited_team_messages: string = "join us! ";
   Team_id: number = 0;
   add_Team_Name: string = "";
-  add_Team_message: string = " ";
+  add_Team_message: string = "join us! ";
   add_Number_needed: number = 0;
   add_Team_Captain_Name: string = "";
   add_Team_Captain_Uni: string = "";
@@ -47,8 +49,17 @@ export class TeamComponent implements OnInit {
   edit_click: boolean = false;
   delete_captain_uni: string = "";
   edit_captain_uni: string = "";
+  team_click: boolean = false;
+  member_click: boolean = false;
+  browse_team_id: number;
+  browse_course_id: number;
+  add_Student_Uni: string;
+  add_Student_Name: string;
+  delete_Student_Uni: string;
 
+  Team_info: Team[];
   All_teams: Team[];
+  Team_member: StudentInTeam[];
   currentWholeUrl : string;
 
   /* pagination field */
@@ -69,6 +80,8 @@ export class TeamComponent implements OnInit {
     this.add_click = true;
     this.search_click = false;
     this.edit_click = false;
+    this.team_click=false;
+    this.member_click=false;
   }
 
   getMessage(type: string): string {
@@ -87,6 +100,23 @@ export class TeamComponent implements OnInit {
     this.search_click = true;
     this.add_click = false;
     this.edit_click = false;
+    this.team_click=false;
+  }
+
+  showTeam(course_id: number, team_captain_uni: string, team_id: number) : void{
+    this.search_click = false;
+    this.add_click = false;
+    this.edit_click = false;
+    this.team_click = true;
+    this.browseTeambyInput(course_id,team_captain_uni, team_id);
+  }
+
+  showAddMmber() {
+    this.search_click = false;
+    this.add_click = false;
+    this.edit_click = false;
+    this.team_click=true;
+    this.member_click=true;
   }
 
   RetrieveAllTeam(): void{
@@ -106,8 +136,23 @@ export class TeamComponent implements OnInit {
         let totalItems = res[0];
         this.All_teams=res[1];
         this.count = totalItems;
+        console.log(this.All_teams);
       }
     )
+  }
+
+  browseTeambyInput(course_id=this.browse_course_id, team_captain_uni=this.edit_captain_uni, team_id=this.browse_team_id):void{
+    let curMessage = "";
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.browse_team_info_by_input(course_id,team_captain_uni).subscribe((res) => {
+        this.Team_info=Array.from(Object.values(res));
+        console.log(this.Team_info);
+    }); 
+    this.browse_all_team_member(course_id, team_id);
   }
 
   addteam(): void{
@@ -120,7 +165,7 @@ export class TeamComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.TeamService.add_team(this.add_Course_id, this.add_Team_Name, this.add_Team_message="join us!", this.add_Number_needed,
+    this.TeamService.add_team(this.add_Course_id, this.add_Team_Name, this.add_Team_message, this.add_Number_needed,
       this.add_Team_Captain_Name, this.add_Team_Captain_Uni
     ).subscribe(()=>{});
   }
@@ -169,7 +214,7 @@ export class TeamComponent implements OnInit {
     }
     this.TeamService.edit_team(
       this.edited_team_name, this.edited_Course_id, this.edited_team_captain,
-      this.edited_team_id, this.edited_number_needed, this.edited_team_messages="join us!", this.edit_captain_uni
+      this.edited_team_id, this.edited_number_needed, this.edited_team_messages, this.edit_captain_uni
     ).subscribe((data) => {
       this.setEditForm(0, 0, "", "", "", 0, "");
       this.All_teams = [];
@@ -186,6 +231,45 @@ export class TeamComponent implements OnInit {
     this.pageSize = event.target.value;
     this.page = 1;
     this.RetrieveAllTeam(); //TODO: Uncomment this after implementing API
+  }
+
+  browse_all_team_member(course_id=this.browse_course_id, team_id=this.browse_team_id):void{
+    let curMessage = "";
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.browse_all_team_member(course_id,team_id).subscribe((res) => {
+        this.Team_member=Array.from(Object.values(res));
+        console.log(this.Team_member);
+    }); 
+  }
+
+  add_member(uni=this.add_Student_Uni, course_id=this.browse_course_id, team_id=this.browse_team_id):void{
+    let curMessage = "";
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.add_member(uni, team_id, course_id).subscribe((res) => {
+      this.member_click=false;
+      this.browse_all_team_member(course_id, team_id);
+  }); 
+  }
+
+  delete_member(uni=this.delete_Student_Uni, course_id=this.browse_course_id, team_id=this.browse_team_id):void{
+    let curMessage = "";
+    if(curMessage !== "") {
+      // there are some error when inputting fields
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.delete_member(uni, team_id, course_id).subscribe((res) => {
+      this.member_click=false;
+      this.browse_all_team_member(course_id, team_id);
+  }); 
   }
 
 

@@ -40,6 +40,12 @@ export class TeamService {
             currmessage = "No existed Preference is found!";
           }
         }
+        if (operation == "notFound"){
+          if (error.error == "NOT FOUND") {
+            console.log(111);
+            currmessage = "Not found";
+          }
+        }
       this.messageService.update(currmessage, "WARNING");
     }
     // Let the app keep running by returning an empty result.
@@ -93,7 +99,32 @@ export class TeamService {
       catchError(this.handleError<any>("editteam")));
   }
 
+  browse_team_info_by_input(course_id: number, team_captain_uni: string): Observable<any> {
+    let teamUrl: string = "";
+    teamUrl = this.getTeamServiceUrl() + `team/team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
+    return this.http.get<any>(teamUrl).pipe(
+      catchError(this.handleError<any>("addteam")));
+  }
 
+  browse_all_team_member(course_id: number, team_id: number): Observable<any> {
+    let teamUrl: string = "";
+    teamUrl = this.getTeamServiceUrl() + `team/team_member/team_id=${team_id}&course_id=${course_id}`;
+    return this.http.get<any>(teamUrl).pipe(
+      catchError(this.handleError<any>("notFound")));
+  }
 
+  add_member(uni: string, team_id: number, course_id: number): Observable<any> {
+    let teamUrl: string = "";
+    teamUrl = this.getTeamServiceUrl() + `team/add_member/uni=${uni}&team_id=${team_id}&course_id=${course_id}`;
+    return this.http.get<any>(teamUrl).pipe(
+      catchError(this.handleError<any>("notFound")));
+  }
+
+  delete_member(uni: string, team_id: number, course_id: number): Observable<any> {
+    let teamUrl: string = "";
+    teamUrl = this.getTeamServiceUrl() + `team/delete_member/uni=${uni}&team_id=${team_id}&course_id=${course_id}`;
+    return this.http.get<any>(teamUrl).pipe(
+      catchError(this.handleError<any>("notFound")));
+  }
 }
 

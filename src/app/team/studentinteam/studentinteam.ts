@@ -1,5 +1,5 @@
 export class StudentInTeam {
-    uni: string;
+    Uni: string;
     Course_id: number;
     Team_id : number;
   }

@@ -24,16 +24,19 @@ const routes2:  Routes = [
 ];
 const routes3:  Routes = [
   { path: '', redirectTo: '/team', pathMatch: 'full' },
-  { path: 'team', component:  TeamComponent, 
-  children: [
-    {path: 'info', component: StudentinteamComponent}
-  ]},
+  { path: 'team', component:  TeamComponent, },
   { path: 'about', component:  AboutComponent},
 ];
 
+const routes4:  Routes = [
+  { path: '', redirectTo: '/team-info', pathMatch: 'full' },
+  { path: 'team-info', component:  StudentinteamComponent, },
+  { path: 'about', component:  AboutComponent},
+]
+
 @NgModule({
   imports: [RouterModule.forRoot(routes), RouterModule.forRoot(routes1), RouterModule.forRoot(routes2),
-    RouterModule.forRoot(routes3)],
+    RouterModule.forRoot(routes3), RouterModule.forRoot(routes4)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
