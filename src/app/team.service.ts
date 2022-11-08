@@ -71,6 +71,7 @@ export class TeamService {
     console.log(teamUrl);
     return this.http.get(teamUrl).pipe(catchError(this.handleError<any>("SearchTeam")));
     }
+  
 
   add_team(
     course_id: number, team_name: string, team_message: string,  number_needed: number, team_captain: string, team_captain_uni: string
@@ -113,9 +114,9 @@ export class TeamService {
       catchError(this.handleError<any>("notFound")));
   }
 
-  add_member(uni: string, team_id: number, course_id: number): Observable<any> {
+  add_member(uni: string, Student_Name: string, team_id: number, course_id: number): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/add_member/uni=${uni}&team_id=${team_id}&course_id=${course_id}`;
+    teamUrl = this.getTeamServiceUrl() + `team/add_member/uni=${uni}&student_name=${Student_Name}&team_id=${team_id}&course_id=${course_id}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("notFound")));
   }

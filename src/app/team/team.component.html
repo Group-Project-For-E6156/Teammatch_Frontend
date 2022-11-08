@@ -5,13 +5,13 @@
         <app-messages></app-messages>
         <div>
           <button style="width:30%; display:inline-block" [routerLink]="['/courses']">check course</button>
-          <button style="width:30%; display:inline-block" (click)="showContentSearch()">Search all Teams</button>
-          <button style="width:30%; display:inline-block" (click)='showContent()'> Create New Team</button></div> <br>
+          <button style="width:30%; display:inline-block" (click)="showContentSearch()">Search Teams</button>
+          <button style="width:30%; display:inline-block" (click)='showContent()'> Create Team</button></div> <br>
         <div class="form-group form-inline" *ngIf='search_click'>
             <label for="course_search">Course ID</label>
             <input style="width:20%; display:inline-block" id="course_search" name = "input" type="text" [(ngModel)]="this.check_Course_id">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <button style="width:20%; display:inline-block" (click)='RetrieveAllTeam()'> Search</button>
+            <button style="width:20%; display:inline-block" (click)='RetrieveAllTeam(this.check_Course_id)'> Search</button>
           <table class="table table-striped" >
             <thead>
             <tr>
@@ -27,14 +27,14 @@
                 itemsPerPage: this.pageSize,
                 currentPage: this.page,
                 totalItems: this.count
-              }" (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">
-              <td>
+              }">
+              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">
                 {{ x.Team_Name }}
               </td>
-              <td>{{ x.Team_id }}</td>
-              <td>{{ x.Team_message }}</td>
-              <td>{{ x.Number_needed }}</td>
-              <td>{{ x.Team_Captain }}</td>
+              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Team_id }}</td>
+              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Team_message }}</td>
+              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Number_needed }}</td>
+              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)"f>{{ x.Team_Captain }}</td>
               <td>
                 <ul class="list-inline m-0">
                   <li class="list-inline-item">
@@ -64,13 +64,13 @@
                 previousLabel="Prev"
                 nextLabel="Next"
                 [responsive]= "true"
-                (pageChange)="this.handlePageChange($event)"
+                (pageChange)="this.handlePageChange($event, this.check_Course_id)"
               ></pagination-controls>
             </div>
 
             <div class="mt-3">
               Course Preferencs per Page:
-              <select (change)="handlePageSizeChange($event)">
+              <select (change)="handlePageSizeChange($event, this.check_Course_id)">
                 <option *ngFor="let size of pageSizes" [ngValue]="size">
                   {{ size }}
                 </option>
@@ -157,7 +157,7 @@
           </thead>
           <tbody>
           <tr *ngFor="let y of Team_member" style="text-align: left">
-            <td [routerLink]="['/preferences']"></td>
+            <td [routerLink]="['/preferences']"> {{y.Student_Name}}</td>
             <td [routerLink]="['/preferences']">{{ y.Uni }}</td>
             <td>
               <ul class="list-inline m-0">
@@ -165,7 +165,7 @@
                   <button style="width:100%; display:inline-block"
                           class="btn btn-danger btn-sm rounded-0"
                           type="button" data-toggle="tooltip" data-placement="top" title="Delete"
-                          (click)="delete_member(y.Uni, x.Team_id, x.Course_id)">
+                          (click)="delete_member(y.Uni, x.Course_id, x.Team_id)">
                     <i class="fa fa-trash"></i>
                   </button>
                 </li>
@@ -188,7 +188,7 @@
             <label for="student_name"> Student Name &nbsp;&nbsp; </label>
             <input id="student_name" name = "input2" type="text" [(ngModel)]="this.add_Student_Name">
           </div>
-          <button (click)="add_member(this.add_Student_Uni,x.Team_id, x.Course_id)">Add Member</button> <br><br>
+          <button (click)="add_member(this.add_Student_Uni, this.add_Student_Name, x.Course_id, x.Team_id)">Add Member</button> <br><br>
         </div>
         </div>
 
