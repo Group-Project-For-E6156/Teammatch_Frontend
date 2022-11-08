@@ -38,14 +38,16 @@
               <td>
                 <ul class="list-inline m-0">
                   <li class="list-inline-item">
-                    <button class="btn btn-success btn-sm rounded-0"
+                    <button style="width:100%; display:inline-block"
+                            class="btn btn-success btn-sm rounded-0"
                             type="button" data-toggle="tooltip" data-placement="top" title="Edit"
                             (click)="setEditForm(x.Team_id, x.Course_id, x.Team_Captain_Uni, x.Team_Name, x.Team_Captain, x.Number_needed, x.Team_Captain)">
                       <i class="fa fa-edit"></i>
                     </button>
                   </li>
                   <li class="list-inline-item">
-                    <button class="btn btn-danger btn-sm rounded-0"
+                    <button style="width:100%; display:inline-block"
+                            class="btn btn-danger btn-sm rounded-0"
                             type="button" data-toggle="tooltip" data-placement="top" title="Delete"
                             (click)="DeleteTeam(x.Team_id, x.Course_id, x.Team_Captain_Uni,true)">
                       <i class="fa fa-trash"></i>
@@ -137,12 +139,13 @@
       <div class="form-group" *ngIf='team_click'>
         <div *ngFor="let x of Team_info">
           <div style="text-align:right;">
-          Course ID: {{x.Course_id}}
-          Team ID: {{x.Team_id}}
+          <b>Course ID : </b>{{x.Course_id}}
+          <b>Team ID : </b>{{x.Team_id}}
          </div>
-          <div style="text-align: left">Team Name: {{x.Team_Name}} <br>
-          Team Captain: {{x.Team_Captain}} {{x.Team_Captain_Uni}} <br>
-          Team Message: <br>
+          <div style="text-align: left">
+          <b>Team Name: </b>{{x.Team_Name}} <br>
+          <b>Team Captain: </b>{{x.Team_Captain}} {{x.Team_Captain_Uni}} <br>
+          <b>Team Message: </b> <br>
           &nbsp;&nbsp;{{x.Team_message}}
         </div>
         <table class="table table-striped" >
@@ -153,13 +156,14 @@
           </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let y of Team_member">
+          <tr *ngFor="let y of Team_member" style="text-align: left">
             <td [routerLink]="['/preferences']"></td>
             <td [routerLink]="['/preferences']">{{ y.Uni }}</td>
             <td>
               <ul class="list-inline m-0">
                 <li class="list-inline-item">
-                  <button class="btn btn-danger btn-sm rounded-0"
+                  <button style="width:100%; display:inline-block"
+                          class="btn btn-danger btn-sm rounded-0"
                           type="button" data-toggle="tooltip" data-placement="top" title="Delete"
                           (click)="delete_member(y.Uni, x.Team_id, x.Course_id)">
                     <i class="fa fa-trash"></i>
@@ -171,7 +175,9 @@
           </tbody>
         </table>
         <div>
-          <button (click)="showAddMmber()">Add Team Member</button> <br><br><br>
+          <button style="width:30%; display:inline-block" (click)="showAddMmber()">Add Team Member</button>
+          <button style="width:30%; display:inline-block"(click)="showAddMmber()">Match Classmates</button>
+           <br><br><br>
         </div>
         <div class="form-group" *ngIf='member_click'>
           <div class="form-group form-inline" >
