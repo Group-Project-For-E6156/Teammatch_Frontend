@@ -3,8 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MessageService } from "./message.service";
 import { CoursePreference } from "./coursepreference/coursepreference"
 import { catchError, throwError, Observable, of} from 'rxjs';
-import {Course} from "./Courses/Course";
-
+import { Course } from "./Courses/Course";
+import { StorageService } from "./storage.service"
 @Injectable({
   providedIn: 'root'
 })
@@ -13,7 +13,8 @@ export class CoursePreferenceService {
   addPreferenceSuccess: boolean = false;
   constructor(
     private http: HttpClient,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private storageService: StorageService
   ) {}
 
 

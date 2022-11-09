@@ -26,6 +26,7 @@
       <table class="table table-striped">
         <thead>
         <tr>
+          <th scope="col">Course ID</th>
           <th scope="col">Name</th>
           <th scope="col">Department</th>
           <th scope="col">Introduction</th>
@@ -33,6 +34,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let p of this.CourseInfo">
+          <td>{{ p.Course_id }}</td>
           <td>
             {{ p.Course_Name }}
           </td>

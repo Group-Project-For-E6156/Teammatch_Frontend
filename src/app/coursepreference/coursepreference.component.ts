@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from "../message.service";
 import { CoursePreferenceService } from "../coursepreference.service";
 import { CoursePreference } from './coursepreference';
-
+import { StorageService } from "../storage.service"
 @Component({
   selector: 'app-coursepreference',
   templateUrl: './coursepreference.component.html',
@@ -29,7 +29,6 @@ export class CoursepreferenceComponent implements OnInit {
   edit_prefered_Timezone: string = "";
   edit_prefered_message: string = "";
   CoursePreferenceInfo: CoursePreference[] = [];
-
   /* pagination field */
   page = 1;
   count = 0;
@@ -39,6 +38,7 @@ export class CoursepreferenceComponent implements OnInit {
   constructor(
     public messageService: MessageService,
     public coursePreferenceService: CoursePreferenceService,
+    public StorageService: StorageService
   ) {
 
   }
@@ -79,10 +79,8 @@ export class CoursepreferenceComponent implements OnInit {
   }
 
   SetPreferenceInfo(thePreference: CoursePreference[]): void {
-    console.log("Students = \n" + JSON.stringify(thePreference, null, 2));
     this.CoursePreferenceInfo = thePreference;
-    console.log(this.CoursePreferenceInfo);
-    console.log(this.page, this.pageSize, this.count);
+
 }
 
   AddCoursePreference(): void {
@@ -94,6 +92,10 @@ export class CoursepreferenceComponent implements OnInit {
     if(curMessage !== "") {
       // there are some error when inputting fields
       this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    if (this.add_uni !== this.StorageService.getUser().uni){
+      this.messageService.update("You can only search, add and edit your own course preference", "WARNING");
       return;
     }
     this.coursePreferenceService.addCoursePreference(
@@ -179,13 +181,17 @@ export class CoursepreferenceComponent implements OnInit {
   RetrieveCoursePreference(): void {
     //TODO: Substitue CheckCoursePreference function in all script
     const params = this.getRequestParams(this.check_uni, this.page, this.pageSize);
-    console.log("paras is ", params);
-
+    let curMessage = "";
+    if (this.check_uni !== this.StorageService.getUser().uni){
+      this.messageService.update("You can only search, add and edit your own course preference", "WARNING");
+      return;
+    }
     this.coursePreferenceService.retreiveCoursePreferenceByParams(params).subscribe(
         response => {
           const coursePreferences = response[1];
           let totalItems = response[0];
-          console.log(coursePreferences);
+          console.log(response[1]);
+          console.log(this.StorageService.getUser());
           this.CoursePreferenceInfo = coursePreferences;
           this.count = totalItems;
           this.SetPreferenceInfo(coursePreferences);

@@ -122,13 +122,26 @@
           <label for="Course_id_create1">Course ID</label>
           <span id="Course_id_create1">{{this.edit_Course_id}}</span>
         </div>
+
         <div class="form-group form-inline">
-          <label for="prefered_Dept_create1">Teammates Department</label>
-          <input id="prefered_Dept_create1" name = "input8" type="text" [(ngModel)]="this.edit_prefered_Dept">
+          <label for="prefered_Dept_create">Teammates Timezone</label>
+          <select name="singleSelect" id="prefered_Dept_edit" [(ngModel)]="this.edit_prefered_Timezone">
+            <option selected value="est">Eastern EST</option>
+            <option selected value="cst">Central CST</option>
+            <option value="pst">Pacific PST</option>
+            <option value="other">Other</option>
+          </select>
         </div>
         <div class="form-group form-inline">
-          <label for="prefered_Timezone_create1">Teammates Timezone</label>
-          <input id="prefered_Timezone_create1" name = "input9" type="text" [(ngModel)]="this.edit_prefered_Timezone">
+          <label for="prefered_Timezone_create">Teammates Major</label>
+          <select name="singleSelect" id="prefered_Timezone_edit" [(ngModel)]="this.edit_prefered_Dept">
+            <option selected value="na">Prefer Not to Say</option>
+            <option value="cs">Computer Science</option>
+            <option value="stats">Statistics</option>
+            <option value="ee">Electrical Engineering</option>
+            <option value="ds">Data Science</option>
+            <option value="math">Mathematics</option>
+          </select>
         </div>
         <div class="form-group form-inline">
           <label for="prefered_message_create1">Your Message</label>
