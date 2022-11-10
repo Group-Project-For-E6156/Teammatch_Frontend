@@ -8,7 +8,7 @@ import { AccountComponent } from './account/account.component';
 import { MessagesComponent } from './messages/messages.component';
 import { CourseComponent } from './Courses/course.component'
 import { FormsModule } from "@angular/forms";
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
 import { NgxPaginationModule } from "ngx-pagination";
 import { TeamComponent } from './team/team.component';
@@ -16,6 +16,7 @@ import { StudentinteamComponent } from './team/studentinteam/studentinteam.compo
 import { CommonModule } from '@angular/common';
 import {AccountProfileComponent} from "./account-profile/account-profile.component";
 import { HomeComponent } from './home/home.component';
+import {TokenInterceptor} from "./token.interceptor";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,11 @@ import { HomeComponent } from './home/home.component';
     NgxPaginationModule,
     CommonModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: TokenInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

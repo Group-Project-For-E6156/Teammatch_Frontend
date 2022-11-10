@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from "../message.service";
 import { AccountService } from "../account.service";
-import {StorageService} from "../storage.service";
 import { Router } from "@angular/router";
 
 @Component({
@@ -27,25 +26,17 @@ export class AccountComponent implements OnInit {
   password: string = "";
   email_address: string = "";
 
-  // Fields to record current status
-  isLoggedIn = false;
 
   constructor(
       public messageService: MessageService,
       public accountService: AccountService,
-      public storageService: StorageService,
       public router: Router,
   ) {}
 
 
   ngOnInit(): void {
-    let message = this.getMessage("TO_REGISTER");
+    let message = this.getMessage("TO_LOGIN");
     this.messageService.update(message, "INFO");
-    if (this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
-      console.log("Initialize loggedin", this.uni, this.first_name);
-      this.router.navigate(['/home']);
-    }
   }
 
   /** Use message type to get message from message dict - only one output */
@@ -55,20 +46,10 @@ export class AccountComponent implements OnInit {
         .map(item => item[1])[0];
   }
 
-  clearFields(): void {
-    this.uni= "";
-    this.first_name = "";
-    this.middle_name = "";
-    this.last_name = "";
-    this.password = "";
-    this.email_address = "";
-  }
-
   /**
    * Change form between login, sign-up, profile
    * @param toSignUp
    * @param toLogIn
-   * @param toProfile
    * @param changeMessage
    */
   changeForm(toSignUp: boolean, toLogIn: boolean, changeMessage: boolean = true): void {
@@ -111,10 +92,9 @@ export class AccountComponent implements OnInit {
       return;
     }
 
-    this.accountService.addAccount(
+    this.accountService.signUp(
         this.uni, this.email_address, this.password, this.last_name, this.first_name, this.middle_name
     ).subscribe((_) => {
-          console.log(this.accountService.addAccountSuccess);
           if(this.accountService.addAccountSuccess) {
             this.changeForm(false, true, false);
           }
@@ -138,22 +118,6 @@ export class AccountComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    this.accountService.getAccount(this.uni).subscribe(
-        (account) => {
-          if(account && account.password === this.password) {
-            this.messageService.update("Successfully log in!", "SUCCESS");
-            this.first_name = account.first_name;
-            this.last_name = account.last_name;
-            this.middle_name = account.middle_name;
-            this.email_address = account.email;
-            // remember to storage
-            this.storageService.saveUser(account);
-            console.log(this.storageService.getUser());
-            window.location.reload();
-          } else {
-            this.messageService.update("Failed Login: Check your UNI/password!", "DANGER");
-          }
-        }
-    )
+    this.accountService.logIn(this.uni, this.password);
   }
 }

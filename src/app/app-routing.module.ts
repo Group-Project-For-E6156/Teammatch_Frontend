@@ -8,12 +8,13 @@ import { TeamComponent } from "./team/team.component";
 import { StudentinteamComponent} from "./team/studentinteam/studentinteam.component"
 import {AccountProfileComponent} from "./account-profile/account-profile.component";
 import {HomeComponent} from "./home/home.component";
+import { AccountGuard} from "./account.guard";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component:  HomeComponent},
   { path: 'account', component: AccountComponent },
-  { path: 'profile', component: AccountProfileComponent },
+  { path: 'profile', component: AccountProfileComponent, canActivate: [AccountGuard]},
   { path: 'about', component:  AboutComponent},
 ];
 const routes1: Routes = [

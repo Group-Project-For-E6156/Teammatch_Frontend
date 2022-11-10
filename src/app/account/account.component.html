@@ -30,7 +30,7 @@
       </div>
       <button (click)="createAccount()">create</button>
       <p class="message">
-        Already registered? <a (click)="changeForm(false, true, false)">Sign In</a>
+        Already registered? <a (click)="changeForm(false, true)">Sign In</a>
       </p>
     </form>
     <form id="login-form">
@@ -46,7 +46,7 @@
       </div>
       <button (click)="logIntoAccount()">login</button>
       <p class="message">
-        Not registered? <a (click)="changeForm(true, false, false)">Create an account</a>
+        Not registered? <a (click)="changeForm(true, false)">Create an account</a>
       </p>
     </form>
   </div>

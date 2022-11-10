@@ -5,6 +5,8 @@ const USER_KEY = 'auth-user';
 @Injectable({
   providedIn: 'root'
 })
+
+// TODO: remove storage service???
 export class StorageService {
 
   constructor() { }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {StorageService} from "../storage.service";
 import {AccountService} from "../account.service";
 
 @Component({
@@ -28,25 +27,25 @@ export class HomeComponent implements OnInit {
   profile_img = this.UNKNOWN_IMAGE;
 
   constructor(
-    public storageService: StorageService,
     public accountService: AccountService,
   ) { }
 
   ngOnInit(): void {
-    if(this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
-      this.notLoggedIn = false;
-      let account = this.storageService.getUser();
+    this.isLoggedIn = this.accountService.isLoggedIn;
+    this.notLoggedIn = !this.isLoggedIn;
+    if(this.isLoggedIn) {
+      let account = this.accountService.currentUser;
+      console.log(account);
       this.user.uni = account.uni;
       this.user.email = account.email;
       this.user.first_name = account.first_name;
       this.user.last_name = account.last_name;
 
       // get profile
-      this.accountService.getProfile(this.user.uni).subscribe(
+      this.accountService.getProfile().subscribe(
         (profile) => {
+          console.log(profile)
           if(profile) {
-            console.log(profile)
             this.user.timezone = profile.timezone;
             this.user.gender = profile.gender;
             this.user.major = profile.major;
@@ -67,10 +66,8 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  signOut(): void {
-    this.isLoggedIn = false;
-    this.notLoggedIn = true;
-    this.storageService.clean();
+  logOut(): void {
+    this.accountService.logOut()
     window.location.reload();
   }
 

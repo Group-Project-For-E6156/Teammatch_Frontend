@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MessageService} from "../message.service";
 import {AccountService} from "../account.service";
-import {StorageService} from "../storage.service";
 import {Router} from "@angular/router";
 
 @Component({
@@ -27,13 +26,12 @@ export class AccountProfileComponent implements OnInit {
   constructor(
       public messageService: MessageService,
       public accountService: AccountService,
-      public storageService: StorageService,
       public router: Router,
   ) {}
 
   ngOnInit(): void {
-    if(this.storageService.isLoggedIn()) {
-      let user = this.storageService.getUser();
+    if(this.accountService.isLoggedIn) {
+      let user = this.accountService.currentUser;
       console.log(user);
       this.uni = user.uni;
       this.first_name = user.first_name;
@@ -55,14 +53,13 @@ export class AccountProfileComponent implements OnInit {
    * Load the student profile information
    */
   loadProfile(): void {
-    this.accountService.getProfile(this.uni).subscribe(
+    this.accountService.getProfile().subscribe(
         (profile) => {
           if(profile) {
             this.timezone = profile.timezone;
             this.gender = profile.gender;
             this.major = profile.major;
             this.msg = profile.personal_message;
-
             console.log("Loaded", this.timezone, this.gender, this.major, this.msg);
           }
         }
