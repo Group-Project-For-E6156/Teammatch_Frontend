@@ -2,7 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from "../message.service";
 import { CoursePreferenceService } from "../coursepreference.service";
 import { CoursePreference } from './coursepreference';
-import { StorageService } from "../storage.service"
+import { AccountService } from "../account.service";
+
 @Component({
   selector: 'app-coursepreference',
   templateUrl: './coursepreference.component.html',
@@ -38,7 +39,7 @@ export class CoursepreferenceComponent implements OnInit {
   constructor(
     public messageService: MessageService,
     public coursePreferenceService: CoursePreferenceService,
-    public StorageService: StorageService
+    public accountService: AccountService
   ) {
 
   }
@@ -48,6 +49,7 @@ export class CoursepreferenceComponent implements OnInit {
     let message = this.getMessage("STARTING");
     this.messageService.update(message, "INFO");
   }
+
   getMessage(type: string): string {
     return Object.entries(this.messageDict)
       .filter(item => item[0] == type)
@@ -94,7 +96,11 @@ export class CoursepreferenceComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
-    if (this.add_uni !== this.StorageService.getUser().uni){
+    if (!this.accountService.isLoggedIn){
+      this.messageService.update("You must login", "WARNING");
+      return;
+    }
+    if (this.check_uni !== this.accountService.currentUser.uni){
       this.messageService.update("You can only search, add and edit your own course preference", "WARNING");
       return;
     }
@@ -182,7 +188,11 @@ export class CoursepreferenceComponent implements OnInit {
     //TODO: Substitue CheckCoursePreference function in all script
     const params = this.getRequestParams(this.check_uni, this.page, this.pageSize);
     let curMessage = "";
-    if (this.check_uni !== this.StorageService.getUser().uni){
+    if (!this.accountService.isLoggedIn){
+      this.messageService.update("You must login", "WARNING");
+      return;
+    }
+    if (this.check_uni !== this.accountService.currentUser.uni){
       this.messageService.update("You can only search, add and edit your own course preference", "WARNING");
       return;
     }
@@ -191,7 +201,6 @@ export class CoursepreferenceComponent implements OnInit {
           const coursePreferences = response[1];
           let totalItems = response[0];
           console.log(response[1]);
-          console.log(this.StorageService.getUser());
           this.CoursePreferenceInfo = coursePreferences;
           this.count = totalItems;
           this.SetPreferenceInfo(coursePreferences);
