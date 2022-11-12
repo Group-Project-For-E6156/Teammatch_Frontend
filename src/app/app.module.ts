@@ -7,7 +7,7 @@ import { AboutComponent } from './about/about.component';
 import { AccountComponent } from './account/account.component';
 import { MessagesComponent } from './messages/messages.component';
 import { CourseComponent } from './Courses/course.component'
-import { FormsModule } from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { CoursepreferenceComponent } from './coursepreference/coursepreference.component';
 import { NgxPaginationModule } from "ngx-pagination";
@@ -38,7 +38,8 @@ import {TokenInterceptor} from "./token.interceptor";
     AppRoutingModule,
     FormsModule,
     NgxPaginationModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
