@@ -106,7 +106,9 @@ export class AccountComponent implements OnInit {
     console.log("You click on create account!")
     if(this.uni === "" || this.first_name === "" || this.last_name === "" || this.password === "" || this.email_address === "") {
       curMessage = this.getMessage("MISSING_INPUT_SIGNUP");
-    } else if ((this.primEmail?.invalid && this.primEmail.touched) || this.primEmail?.dirty) {
+    }
+    let email_valid  = this.email_address.match("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")
+    if( ! email_valid || email_valid.length == 0) {
       curMessage = this.getMessage("INVALID_EMAIL_ADDRESS");
     }
     if(curMessage !== "") {
