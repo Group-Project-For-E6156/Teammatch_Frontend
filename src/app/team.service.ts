@@ -213,5 +213,12 @@ export class TeamService {
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("notFound")));
   }
-}
 
+
+  find_my_teammate(uni: string, course_id: number): Observable<any> {
+  let teamUrl: string = "";
+  teamUrl = this.getTeamServiceUrl() + `team/find_my_teammate/uni=${uni}&course_id=${course_id}`;
+  return this.http.get<any>(teamUrl).pipe(
+    catchError(this.handleError<any>("notFound")));
+  }
+}
