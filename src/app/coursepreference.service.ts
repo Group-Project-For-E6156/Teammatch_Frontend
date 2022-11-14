@@ -10,6 +10,7 @@ import {AccountService} from "./account.service";
 })
 
 export class CoursePreferenceService {
+  preferenceurl = "http://127.0.0.1:5011/course/student_preference/";
   isLoggedIn = false;
   notLoggedIn = true;
   user = {
@@ -27,6 +28,15 @@ export class CoursePreferenceService {
   MALE_IMAGE = "../../assets/male.png";
   UNKNOWN_IMAGE = "../../assets/unknown.png";
   profile_img = this.UNKNOWN_IMAGE;
+  header = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+    'key': 'x-api-key',
+    'value': 'NNctr6Tjrw9794gFXf3fi6zWBZ78j6Gv3UCb3y0x',
+  });
   constructor(
     private http: HttpClient,
     private messageService: MessageService,
@@ -99,34 +109,27 @@ export class CoursePreferenceService {
   }
 
 
-  getCoursePreferenceServiceUrl(): string {
-    const theUrl = window.location.href;
-    let result: string;
-
-    // This is some seriously bad code.
-    // If you do this on a job interview, you did not learn this in my class.
-    result = "http://127.0.0.1:5011/";
-    console.log(11111);
-    return result;
-  }
-
-  getCoursePreferencebyuni(
-    uni: string
-  ): Observable<any> {
-    let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${uni}`;
-    return this.http.get<CoursePreference[]>(courseUrl).pipe(
-      catchError(this.handleError<CoursePreference[]>("getCoursePreferencebyuni"))
-    );
-  }
-
   retreiveCoursePreferenceByParams(params: any): Observable<any> {
-    // TODO: Maybe modify this function after implementing your API on BE
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/${params[`uni`]}/limit=${params[`size`]}&offset=${params[`size`]*params[`page`]}`;
+    let headers =  new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+      'key': 'x-api-key',
+      'value': 'NNctr6Tjrw9794gFXf3fi6zWBZ78j6Gv3UCb3y0x'})
+
+    if (params[`uni`] !== "" && params[`size`] !== "" && params[`page`] !== ""){
+      let uni = params[`uni`];
+      let limit = params[`size`];
+      let offset = params[`size`] * params[`page`];
+      courseUrl = this.preferenceurl + `?uni=${uni}&limit=${limit}&offset=${offset}`;
+    }
+    const httpOptions = {headers: headers};
     console.log(courseUrl);
-    return this.http.get<CoursePreference[]>(courseUrl).pipe(
-      catchError(this.handleError<CoursePreference[]>("getCoursePreferencebyuni"))
+    return this.http.get<any>(courseUrl).pipe(
+      catchError(this.handleError<any>("getCoursePreferencebyuni"))
     );
   }
 
@@ -134,9 +137,16 @@ export class CoursePreferenceService {
     uni: string, course_id: number, prefered_Dept: string, prefered_Timezone: string, prefered_message: string
   ): Observable<any> {
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/add/uni=${uni}&course_id=
-    ${course_id}&timezone=${prefered_Timezone}&dept=${prefered_Dept}&message=${prefered_message}`;
-    return this.http.get<any>(courseUrl).pipe(
+    courseUrl = this.preferenceurl + `add`;
+    let request: any = {
+      uni: uni,
+      course_id: course_id.toString(),
+      Dept: prefered_Dept,
+      timezone: prefered_Timezone,
+      message: prefered_message
+    };
+   // const httpOptions = {headers: this.header};
+    return this.http.post<any>(courseUrl, request).pipe(
       catchError(this.handleError<any>("addCoursePreference")));
   }
 
@@ -144,9 +154,15 @@ export class CoursePreferenceService {
     uni: string, course_id: number, prefered_Dept: string, prefered_Timezone: string, prefered_message: string
   ): Observable<any> {
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/edit/uni=${uni}&course_id=
-    ${course_id}&timezone=${prefered_Timezone}&dept=${prefered_Dept}&message=${prefered_message}`;
-    return this.http.get<any>(courseUrl).pipe(
+    courseUrl = this.preferenceurl + `edit/`;
+    let request: any = {
+      uni: uni,
+      course_id: course_id.toString(),
+      Dept: prefered_Dept,
+      timezone: prefered_Timezone,
+      message: prefered_message
+    };
+    return this.http.post<any>(courseUrl, request).pipe(
       catchError(this.handleError<any>("editCoursePreference")));
   }
 
@@ -154,8 +170,12 @@ export class CoursePreferenceService {
     uni: string, course_id: number
   ): Observable<any> {
     let courseUrl: string = "";
-    courseUrl = this.getCoursePreferenceServiceUrl() + `course/student_preference/delete/uni=${uni}&course_id=${course_id}`;
-    return this.http.get<any>(courseUrl).pipe(
+    courseUrl = this.preferenceurl + `delete/`;
+    let request: any = {
+      uni: uni,
+      course_id: course_id.toString()
+    };
+    return this.http.post<any>(courseUrl, request).pipe(
       catchError(this.handleError<any>("deleteCoursePreference")));
   }
 }

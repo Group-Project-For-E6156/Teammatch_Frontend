@@ -67,6 +67,7 @@ export class AccountService {
       uni: uni,
       password: password
     };
+    console.log(request);
     return this.http
         .post<any>(`${this.accountServiceUrl}login`, request)
         .subscribe({
@@ -134,6 +135,7 @@ export class AccountService {
       first_name: first_name,
       middle_name: middle_name
     };
+    console.log(registerUrl);
     return this.http.post<any>(registerUrl, request).pipe(
       catchError(this.handleError<any>("signUp")),
     );

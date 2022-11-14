@@ -100,7 +100,7 @@ export class CoursepreferenceComponent implements OnInit {
       this.messageService.update("You must login", "WARNING");
       return;
     }
-    if (this.check_uni !== this.accountService.currentUser.uni){
+    if (this.add_uni !== this.accountService.currentUser.uni){
       this.messageService.update("You can only search, add and edit your own course preference", "WARNING");
       return;
     }
@@ -165,28 +165,10 @@ export class CoursepreferenceComponent implements OnInit {
     return params;
   }
 
-  CheckCoursePreference(): void{
-    // TODO: delete this method after testing backend API
-    let curMessage = "";
-    if(this.check_uni === "") {
-      curMessage = this.getMessage("MISSING_INPUT");
-    }
-    if(curMessage !== "") {
-      // there are some error when inputting fields
-      this.messageService.update(curMessage, "WARNING");
-      return;
-    }
-    this.coursePreferenceService.getCoursePreferencebyuni(this.check_uni).
-    subscribe((data) => {
-      console.log(data);
-      this.CoursePreferenceInfo = [];
-      this.SetPreferenceInfo(data);
-    });
-  }
 
   RetrieveCoursePreference(): void {
-    //TODO: Substitue CheckCoursePreference function in all script
     const params = this.getRequestParams(this.check_uni, this.page, this.pageSize);
+    console.log(params);
     let curMessage = "";
     if (!this.accountService.isLoggedIn){
       this.messageService.update("You must login", "WARNING");

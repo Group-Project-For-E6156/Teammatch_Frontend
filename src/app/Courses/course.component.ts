@@ -63,7 +63,7 @@ export class CourseComponent implements OnInit {
     }
     this.courseService.addCourse(
       this.Course_Name_add, this.Department, this.CourseIntroduction
-    ).subscribe((data) => {});
+    ).subscribe((_) => {});
   }
 
   CheckCourse(): void{

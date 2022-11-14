@@ -11,6 +11,16 @@ import { catchError, throwError, Observable, of} from 'rxjs';
 
 export class CourseService {
   addCourseSuccess: boolean = false;
+  courseurl = "http://127.0.0.1:5011/course/";
+  header = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE',
+    'key': 'x-api-key',
+    'value': 'NNctr6Tjrw9794gFXf3fi6zWBZ78j6Gv3UCb3y0x',
+  });
   constructor(
     private http: HttpClient,
     private messageService: MessageService
@@ -39,36 +49,38 @@ export class CourseService {
       return of(result as T);
     };
   }
-  getCourseServiceUrl(): string {
-    const theUrl = window.location.href;
-    let result: string;
+  private setHeaders(): Headers {
+    const headersConfig = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Access-Control-Allow-Origin': '*'
+    };
 
-    // This is some seriously bad code.
-    // If you do this on a job interview, you did not learn this in my class.
-    result = "http://127.0.0.1:5011/";
-    return result;
+    return new Headers(headersConfig);
   }
 
-
-  getCourseInfo(Coursename: string): Observable<any> {
-    let courseUrl: string = "";
-    if (Coursename !== "") {
-      courseUrl = this.getCourseServiceUrl() + `course/${Coursename}`;
+  getCourseInfo(course_name = ""): Observable<any> {
+    let courseUrl: string = this.courseurl;
+    if (course_name != ""){
+      courseUrl += `?course_name=${course_name}`;
     }
     return this.http.get<Course>(courseUrl).pipe(
       catchError(this.handleError<any>("checkCourse"))
     );
   }
-
-  addCourse(
-    course_name: string, department: string, introduction: string
-  ): Observable<any> {
-    let courseUrl: string = "";
-    courseUrl = this.getCourseServiceUrl() + `course/add/course_name=${course_name}&department=${department}
-                &introduction=${introduction}`;
-    return this.http.get<any>(courseUrl).pipe(
-      catchError(this.handleError<any>("addCourse")));
+  addCourse(course_name: string, department: string, introduction: string): Observable<any>  {
+    let courseUrl: string =  this.courseurl+'add';
+    let request: any = {
+      course_name: course_name,
+      department: department,
+      introduction: introduction
+    };
+    const httpOptions = {headers: this.header};
+    return this.http.post(courseUrl, request,  httpOptions).pipe(
+      catchError(this.handleError<any>("addCourse"))
+    );
   }
+
 }
 
 
