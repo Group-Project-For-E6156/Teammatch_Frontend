@@ -12,52 +12,59 @@
             <input style="width:20%; display:inline-block" id="course_search" name = "input" type="text" [(ngModel)]="this.check_Course_id">
             &nbsp;&nbsp;&nbsp;&nbsp;
             <button style="width:20%; display:inline-block" (click)='RetrieveAllTeam(this.check_Course_id)'> Search</button>
-          <table class="table table-striped" >
-            <thead>
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Team ID</th>
-              <th scope="col">Team_message</th>
-              <th scope="col">Number Needed</th>
-              <th scope="col">Captain Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let x of All_teams | paginate : {
-                itemsPerPage: this.pageSize,
-                currentPage: this.page,
-                totalItems: this.count
-              }">
-              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">
-                {{ x.Team_Name }}
-              </td>
-              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Team_id }}</td>
-              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Team_message }}</td>
-              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Number_needed }}</td>
-              <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)"f>{{ x.Team_Captain }}</td>
-              <td>
-                <ul class="list-inline m-0">
-                  <li class="list-inline-item">
-                    <button style="width:100%; display:inline-block"
-                            class="btn btn-success btn-sm rounded-0"
-                            type="button" data-toggle="tooltip" data-placement="top" title="Edit"
-                            (click)="setEditForm(x.Team_id, x.Course_id, x.Team_Captain_Uni, x.Team_Name, x.Team_Captain, x.Number_needed, x.Team_Captain)">
-                      <i class="fa fa-edit"></i>
-                    </button>
-                  </li>
-                  <li class="list-inline-item">
-                    <button style="width:100%; display:inline-block"
-                            class="btn btn-danger btn-sm rounded-0"
-                            type="button" data-toggle="tooltip" data-placement="top" title="Delete"
-                            (click)="DeleteTeam(x.Team_id, x.Course_id, x.Team_Captain_Uni,true)">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </li>
-                </ul>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+            <div ng-controller="tableview">
+              <table class="table table-striped" >
+                <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">Team ID</th>
+                  <th scope="col">Team_message</th>
+                  <th scope="col">Number Needed</th>
+                  <th scope="col">Captain Name</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let x of All_teams | paginate : {
+                    itemsPerPage: this.pageSize,
+                    currentPage: this.page,
+                    totalItems: this.count
+                  }">
+                  <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">
+                    {{ x.Team_Name }}
+                  </td>
+                  <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Team_id }}</td>
+                  <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Team_message }}</td>
+                  <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)">{{ x.Number_needed }}</td>
+                  <td (click)="showTeam(this.check_Course_id, x.Team_Captain_Uni, x.Team_id)"f>{{ x.Team_Captain }}</td>
+                  <ng-container *ngIf="this.current_uni==x.Team_Captain_Uni; else optionA">
+                    <td>
+                      <ul class="list-inline m-0">
+                        <li class="list-inline-item">
+                          <button style="width:100%; display:inline-block"
+                                  class="btn btn-success btn-sm rounded-0"
+                                  type="button" data-toggle="tooltip" data-placement="top" title="Edit"
+                                  (click)="setEditForm(x.Team_id, x.Course_id, x.Team_Captain_Uni, x.Team_Name, x.Team_Captain, x.Number_needed, x.Team_Captain)">
+                            <i class="fa fa-edit"></i>
+                          </button>
+                        </li>
+                        <li class="list-inline-item">
+                          <button style="width:100%; display:inline-block"
+                                  class="btn btn-danger btn-sm rounded-0"
+                                  type="button" data-toggle="tooltip" data-placement="top" title="Delete"
+                                  (click)="DeleteTeam(x.Team_id, x.Course_id, x.Team_Captain_Uni,true)">
+                            <i class="fa fa-trash"></i>
+                          </button>
+                        </li>
+                      </ul>
+                    </td>
+                </ng-container>
+                <ng-template #optionA>
+                  <td> View Only</td>
+                </ng-template>
+                </tr>
+                </tbody>
+              </table>
+            </div>
           <div *ngIf="this.All_teams!==[]">
             <div class="col-md-12">
               <pagination-controls
@@ -159,18 +166,23 @@
           <tr *ngFor="let y of Team_member" style="text-align: left">
             <td [routerLink]="['/preferences']"> {{y.Student_Name}}</td>
             <td [routerLink]="['/preferences']">{{ y.Uni }}</td>
-            <td>
-              <ul class="list-inline m-0">
-                <li class="list-inline-item">
-                  <button style="width:100%; display:inline-block"
-                          class="btn btn-danger btn-sm rounded-0"
-                          type="button" data-toggle="tooltip" data-placement="top" title="Delete"
-                          (click)="delete_member(y.Uni, x.Course_id, x.Team_id)">
-                    <i class="fa fa-trash"></i>
-                  </button>
-                </li>
-              </ul>
-            </td>
+            <ng-container *ngIf="this.current_uni==x.Team_Captain_Uni; else optionA">
+              <td>
+                <ul class="list-inline m-0">
+                  <li class="list-inline-item">
+                    <button style="width:100%; display:inline-block"
+                            class="btn btn-danger btn-sm rounded-0"
+                            type="button" data-toggle="tooltip" data-placement="top" title="Delete"
+                            (click)="delete_member(y.Uni, x.Course_id, x.Team_id)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </li>
+                </ul>
+              </td>
+            </ng-container>
+            <ng-template #optionA>
+              <td> View Only</td>
+            </ng-template>
           </tr>
           </tbody>
         </table>

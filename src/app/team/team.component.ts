@@ -5,7 +5,8 @@ import { MessageService } from "../message.service";
 import { TeamService } from "../team.service";
 import { StudentinTeamService} from "../studentinteam.service"
 import { Team } from './team';
-import { StudentInTeam} from './studentinteam/studentinteam'
+import { StudentInTeam} from './studentinteam/studentinteam';
+import { AccountService } from "../account.service";
 
 @Component({
   selector: 'app-team',
@@ -16,7 +17,8 @@ export class TeamComponent implements OnInit {
 
   constructor(
     public messageService: MessageService,
-    public TeamService:  TeamService
+    public TeamService:  TeamService,
+    public accountService: AccountService
     ) {
   }
 
@@ -68,12 +70,16 @@ export class TeamComponent implements OnInit {
   pageSize = 3;
   pageSizes = [3, 6, 9];
 
+  // current user
+  current_uni = this.accountService.currentUser.uni
+
   ngOnInit(): void {
     let message = this.getMessage("Select_Course");
     this.messageService.update(message, "INFO");
     this.currentWholeUrl = document.URL;
     this.add_click = false;
     this.search_click = true;
+    console.log(this.current_uni);
   }
 
   showContent() {
@@ -164,6 +170,14 @@ export class TeamComponent implements OnInit {
     if(curMessage !== "") {
       // there are some error when inputting fields
       this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    if (!this.accountService.isLoggedIn){
+      this.messageService.update("You must login", "WARNING");
+      return;
+    }
+    if (this.add_Team_Captain_Uni !== this.accountService.currentUser.uni){
+      this.messageService.update("You can only search, add and edit your own course preference", "WARNING");
       return;
     }
     this.TeamService.add_team(this.add_Course_id, this.add_Team_Name, this.add_Team_message, this.add_Number_needed,
