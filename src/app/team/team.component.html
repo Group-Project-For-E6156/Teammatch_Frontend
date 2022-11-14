@@ -187,7 +187,12 @@
           </tbody>
         </table>
         <div>
-          <button style="width:30%; display:inline-block" (click)="showAddMmber()">Add Team Member</button>
+          <div ng-container *ngIf="this.current_uni==x.Team_Captain_Uni; else optionA">
+            <button style="width:30%; display:inline-block" (click)="showAddMmber()">Add Team Member</button>
+          </div>
+          <ng-template #optionA>
+            <td> Only Captain Add Memeber <br><br><br></td>
+          </ng-template>
           <button style="width:30%; display:inline-block"(click)="showAddMmber()">Match Classmates</button>
            <br><br><br>
         </div>

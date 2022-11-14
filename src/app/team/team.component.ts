@@ -298,16 +298,14 @@ export class TeamComponent implements OnInit {
   }); 
   }
 
-
-
   find_my_meammate(uni= this.delete_captain_uni, course_id=this.browse_course_id):void{
-  let curMessage = "";
-  if(curMessage !== "") {
+    let curMessage = "";
+    if(curMessage !== "") {
     // there are some error when inputting fields
-    this.messageService.update(curMessage, "WARNING");
-    return;
-  }
-  this.TeamService.find_my_teammate(uni, course_id).subscribe((res) => {
+      this.messageService.update(curMessage, "WARNING");
+      return;
+    }
+    this.TeamService.find_my_teammate(uni, course_id).subscribe((res) => {
       this.Find_My_Teammate=Array.from(Object.values(res));
       console.log(this.Find_My_Teammate);
   }); 
