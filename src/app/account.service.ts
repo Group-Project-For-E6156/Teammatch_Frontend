@@ -15,6 +15,7 @@ export class AccountService {
   currentUser: Account;
   user_email: string;
   user_img: string;
+  verified: boolean = true;
 
   constructor(
     private http: HttpClient,
@@ -36,21 +37,22 @@ export class AccountService {
    */
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
-      // console.error(error); // log to console instead
       this.messageService.clear();
       if(error.status == 200) {
         let curMessage;
         if(operation == "signUp") {
           curMessage = "Thanks for the registration! You will receive an email to verify your account!";
           this.addAccountSuccess = true;
+        }
+        if(curMessage) {
           this.messageService.update(curMessage, "SUCCESS");
         }
       } else {
         if (operation == 'signUp') {
           this.addAccountSuccess = false
-          this.messageService.update(`${JSON.stringify(error.error)}`, "DANGER");
+          this.messageService.update(`${error.error}`, "DANGER");
         } else if (operation == 'updateProfile') {
-          this.messageService.update(`${JSON.stringify(error.error)}`, "DANGER");
+          this.messageService.update(`${error.error}`, "DANGER");
         } else { // getProfile
           // do nothing
         }
@@ -90,7 +92,7 @@ export class AccountService {
             this.messageService.update("Successfully log in!", "SUCCESS");
           },
           error: err => {
-            this.messageService.update(`${JSON.stringify(err.error)}`, "DANGER");
+            this.messageService.update(`${err.error}`, "DANGER");
           }
         });
   }
@@ -130,11 +132,47 @@ export class AccountService {
             });
             this.router.navigate(['/home']);
             this.messageService.update("Successfully log in!", "SUCCESS");
+            this.verified = true;
           },
           error: err => {
-            this.messageService.update(`${JSON.stringify(err.error)}`, "DANGER");
+            let error_message = err.error;
+            this.messageService.update(`${error_message}`, "DANGER");
+            if(error_message.includes("VERIFIED")) {
+              this.verified = false;
+              console.log("This account verified:", this.verified);
+            }
           }
         });
+  }
+
+
+  /**
+   * Resend Verification Email
+   * @param uni
+   * @param password
+   */
+  resendVerification(uni: string, password: string) {
+    let request: any = {
+      uni: uni,
+      password: password
+    };
+    let accountUrl: string = this.accountServiceUrl + "resend";
+    console.log(accountUrl, request);
+    this.http.post<any>(accountUrl, request).subscribe(
+      (res) => {
+        console.log(res);
+      },
+      (err) => {
+        if( err.status == 200 ) {
+          let curMessage = "You have successfully re-sent a message! " +
+            "Please use the link you get to activate your account and try to log in again!"
+          this.messageService.update(curMessage, "SUCCESS");
+          this.verified = true;
+        } else {
+          this.messageService.update(err.error, "DANGER");
+        }
+      }
+    );
   }
 
   getToken() {

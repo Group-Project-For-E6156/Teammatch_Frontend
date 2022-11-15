@@ -9,11 +9,13 @@ import { StudentinteamComponent} from "./team/studentinteam/studentinteam.compon
 import {AccountProfileComponent} from "./account-profile/account-profile.component";
 import {HomeComponent} from "./home/home.component";
 import { AccountGuard} from "./account.guard";
+import {VerificationComponent} from "./verification/verification.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component:  HomeComponent},
   { path: 'account', component: AccountComponent },
+  { path: 'verification', component: VerificationComponent },
   { path: 'profile', component: AccountProfileComponent, canActivate: [AccountGuard]},
   { path: 'about', component:  AboutComponent},
 ];
@@ -29,7 +31,7 @@ const routes2:  Routes = [
 ];
 const routes3:  Routes = [
   { path: '', redirectTo: '/team', pathMatch: 'full' },
-  { path: 'team', component:  TeamComponent, 
+  { path: 'team', component:  TeamComponent,
   children: [
     {path: 'info', component: StudentinteamComponent}
   ]},
