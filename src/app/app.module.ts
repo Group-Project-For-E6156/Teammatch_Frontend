@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import {AccountProfileComponent} from "./account-profile/account-profile.component";
 import { HomeComponent } from './home/home.component';
 import {TokenInterceptor} from "./token.interceptor";
+import { VerificationComponent } from './verification/verification.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {TokenInterceptor} from "./token.interceptor";
     CoursepreferenceComponent,
     TeamComponent,
     StudentinteamComponent,
-    HomeComponent
+    HomeComponent,
+    VerificationComponent
   ],
   imports: [
     BrowserModule,

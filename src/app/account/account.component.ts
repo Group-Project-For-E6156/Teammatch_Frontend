@@ -21,7 +21,8 @@ export class AccountComponent implements OnInit {
     "FAILED": "FAILED IN REGISTRATION:",
     "MISSING_INPUT_LOGIN": "You should have uni & password filled!",
     "INVALID_EMAIL_ADDRESS": "Your email address should apply to valid format: xxx@xxx.xxx!",
-    "TO_UPDATE_ACCOUNT": "Required fields are: uni & password",
+    "TO_UPDATE_ACCOUNT": "We notice that it's your first time logging in using Google, please further update your " +
+      "account to finish registration. " + "Required fields are: uni & password",
   };
 
   // Fields in students forms
@@ -102,8 +103,6 @@ export class AccountComponent implements OnInit {
   }
 
   loadGoogleLogIn() {
-    // @ts-ignore
-    window.onGoogleLibraryLoad = () => {
       // @ts-ignore
       google.accounts.id.initialize({
         client_id: this.clientId,
@@ -115,11 +114,10 @@ export class AccountComponent implements OnInit {
       google.accounts.id.renderButton(
           // @ts-ignore
           document.getElementById("buttonDiv"),
-          { theme: "outline", size: "large", width: "100%", logo_alignment: "center"}
+          { theme: "outline", size: "large", width: "100%", logo_alignment: "center" }
       );
       // @ts-ignore
       google.accounts.id.prompt((notification: PromptMomentNotification) => {});
-    };
   }
 
   async handleCredentialResponse(response: CredentialResponse) {
@@ -217,5 +215,10 @@ export class AccountComponent implements OnInit {
       return;
     }
     this.accountService.logIn(this.uni, this.password);
+  }
+
+  stopUpdate(): void {
+    this.accountService.logOut();
+    this.changeForm(false, true, false);
   }
 }

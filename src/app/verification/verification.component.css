@@ -1,14 +1,21 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-
-.login-page {
+.verification-page {
   width: 60%;
   padding: 8% 0 0;
   margin: auto;
 }
-.login-page h1 {
+.verification-page h1 {
   /*font-family: "Roboto", sans-serif;*/
   color: #855204;
+}
+.verification-page h4 {
+  /*font-family: "Roboto", sans-serif;*/
+  color: #986824;
+}
+#google-login {
+  color: #27682C;
+  text-decoration: underline;
 }
 .form {
   position: relative;
@@ -47,9 +54,8 @@
   outline: 0;
   background: #e8900a;
   width: 100%;
-  border: 10px;
-  padding: 15px 15px;
-  margin-bottom: 15px;
+  border: 0;
+  padding: 15px;
   color: #FFFFFF;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
@@ -119,10 +125,19 @@ option {
   font-size: 15px;
 }
 body {
-/*  background: #76b852; !* fallback for old browsers *!*/
-/*  background: rgb(141,194,111);*/
-/*  background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);*/
+  background: #76b852; /* fallback for old browsers */
+  background: rgb(141,194,111);
+  background: linear-gradient(90deg, rgba(141,194,111,1) 0%, rgba(118,184,82,1) 50%);
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.card {
+  text-align: center;
+  /*width: 40%;*/
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 15px 15px;
+  padding: 15px 15px;
+  height: 33.33%;
 }

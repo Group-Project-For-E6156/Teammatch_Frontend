@@ -1,3 +1,4 @@
+<body>
 <p>placeholder for navbar</p>
 <div class="login-page">
   <div class="form">
@@ -38,6 +39,10 @@
     <form id="login-form">
       <h1>Welcome to Teammatcher!</h1>
       <app-messages></app-messages>
+      <button *ngIf="!this.accountService.verified"
+              style="background-color:#27682C"
+              [routerLink]="['/verification']">
+        Verify Account</button>
       <div class="form-group form-inline">
         <label for="uni_login">UNI</label>
         <input id="uni_login" name = "input" type="text" [(ngModel)]="this.uni">
@@ -47,7 +52,11 @@
         <input id="pwd_login" name="input" type="password" [(ngModel)]="this.password"/>
       </div>
       <button (click)="logIntoAccount()">login</button>
-      <div id="buttonDiv"></div>
+      <div id="buttonDiv">
+      </div>
+      <p class="message">
+        If Google-Login is not shown, please refresh the page! :)
+      </p>
       <p class="message">
         Not registered? <a (click)="changeForm(true, false, false)">Create an account</a>
       </p>
@@ -68,6 +77,11 @@
         <input id="password" name="input" type="password" [(ngModel)]="this.password"/>
       </div>
       <button (click)="updateAccount()">save</button>
+      <p class="message">
+        Log-in via other ways? <a (click)="stopUpdate()">Log in</a>
+      </p>
     </form>
   </div>
 </div>
+</body>
+
