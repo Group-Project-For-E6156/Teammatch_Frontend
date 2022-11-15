@@ -72,6 +72,9 @@
 .form #profile-form {
   display: none;
 }
+.form #update-account-form {
+  display: none;
+}
 .container {
   position: relative;
   z-index: 1;

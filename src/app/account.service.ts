@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import { Account } from "./account/account";
 import { MessageService } from "./message.service";
@@ -13,6 +13,8 @@ export class AccountService {
   accountServiceUrl: string = "http://127.0.0.1:2333/students/";
   addAccountSuccess: boolean = false;
   currentUser: Account;
+  user_email: string;
+  user_img: string;
 
   constructor(
     private http: HttpClient,
@@ -20,7 +22,8 @@ export class AccountService {
     public router: Router
   ) {
     if (localStorage.getItem('currentUser') !== 'undefined') {
-      this.currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      this.currentUser = JSON.parse(localStorage.getItem('currentUser') || JSON.stringify(new Account()));
+      this.user_img = localStorage.getItem('user_img') || "";
     }
   }
 
@@ -57,6 +60,55 @@ export class AccountService {
     };
   }
 
+
+  LoginWithGoogle(credentials: string) {
+    const header = new HttpHeaders().set('Content-type', 'application/json');
+    let request: any = {
+      credentials: credentials
+    };
+    return this.http.post(this.accountServiceUrl + "loginwithgoogle", request,{ headers: header })
+        .subscribe({
+          next: (res:any) => {
+            localStorage.setItem('user_img', res.picture);
+            localStorage.setItem('access_token', res.token);
+            if (res.uni == "N/A") {
+              // New user, need to update account info (uni, password)
+              this.getAccount("",res.email).subscribe((res:Account) => {
+                localStorage.setItem('currentUser', JSON.stringify(res))
+                this.router.navigate(['/account']).then(() => {
+                  window.location.reload();
+                });
+              });
+            } else {
+              this.getAccount(res.uni).subscribe((res:Account) => {
+                localStorage.setItem('currentUser', JSON.stringify(res))
+                this.router.navigate(['/home']).then(() => {
+                  window.location.reload();
+                });
+              });
+            }
+            this.messageService.update("Successfully log in!", "SUCCESS");
+          },
+          error: err => {
+            this.messageService.update(`${JSON.stringify(err.error)}`, "DANGER");
+          }
+        });
+  }
+
+  /**
+   * Update user personal account info
+   * @param uni
+   * @param password
+   */
+  updateAccount(uni: string, password: string) {
+    let accountUrl: string = this.accountServiceUrl + "account";
+    let request: any = {
+      uni: uni,
+      password: password
+    };
+    return this.http.post<any>(accountUrl, request, { responseType: 'text' as 'json' });
+  }
+
   /**
    * Log in user
    * @param uni
@@ -67,7 +119,6 @@ export class AccountService {
       uni: uni,
       password: password
     };
-    console.log(request);
     return this.http
         .post<any>(`${this.accountServiceUrl}login`, request)
         .subscribe({
@@ -96,13 +147,11 @@ export class AccountService {
   get isLoggedIn(): boolean {
     let authToken = this.getToken();
     console.log("current token is " + authToken);
-    return authToken !== null;
+    return authToken !== null && this.currentUser.uni !== "N/A";
   }
 
   logOut() {
     localStorage.clear();
-    // localStorage.removeItem('access_token');
-    // localStorage.removeItem('currentUser');
   }
 
   /** Get Account from the server

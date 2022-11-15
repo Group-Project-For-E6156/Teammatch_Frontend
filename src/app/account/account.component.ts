@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, NgZone, OnInit} from '@angular/core';
 import { MessageService } from "../message.service";
 import { AccountService } from "../account.service";
 import { Router } from "@angular/router";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { CredentialResponse, PromptMomentNotification } from 'google-one-tap';
+import { environment } from 'src/environments/environment';
+import {Account} from "./account";
 
 @Component({
   selector: 'app-account',
@@ -18,6 +21,7 @@ export class AccountComponent implements OnInit {
     "FAILED": "FAILED IN REGISTRATION:",
     "MISSING_INPUT_LOGIN": "You should have uni & password filled!",
     "INVALID_EMAIL_ADDRESS": "Your email address should apply to valid format: xxx@xxx.xxx!",
+    "TO_UPDATE_ACCOUNT": "Required fields are: uni & password",
   };
 
   // Fields in students forms
@@ -34,7 +38,10 @@ export class AccountComponent implements OnInit {
     ])
   });
 
+  private clientId = environment.clientId;
+
   constructor(
+      private _ngZone: NgZone,
       public messageService: MessageService,
       public accountService: AccountService,
       public router: Router,
@@ -44,6 +51,79 @@ export class AccountComponent implements OnInit {
   ngOnInit(): void {
     let message = this.getMessage("TO_LOGIN");
     this.messageService.update(message, "INFO");
+    if (!this.accountService.isLoggedIn && this.accountService.currentUser.uni != "N/A") {
+      this.loadGoogleLogIn()
+    } else {
+      console.log(this.accountService.currentUser)
+      if (this.accountService.currentUser.uni == "N/A") {
+        let current_user = this.accountService.currentUser
+        this.first_name = current_user.first_name
+        this.email_address = current_user.email
+        this.changeForm(false,false,true);
+      }
+    }
+  }
+
+  /**
+   * Change form between login, sign-up, profile
+   * @param toSignUp
+   * @param toLogIn
+   * @param toUpdateAccount
+   * @param updateMessage
+   */
+  changeForm(toSignUp: boolean, toLogIn: boolean, toUpdateAccount: boolean, updateMessage: boolean=true): void {
+    if (!toUpdateAccount) {
+      this.clearField();
+    }
+    const registerForm = document.getElementById("register-form");
+    const loginForm = document.getElementById("login-form");
+    const updateAccountForm = document.getElementById("update-account-form");
+    let message = "";
+    if(registerForm != null && loginForm != null && updateAccountForm != null) {
+      registerForm.style.display = "none";
+      loginForm.style.display = "none";
+      updateAccountForm.style.display = "none";
+      if (toSignUp) {
+        message = this.getMessage("TO_REGISTER")
+        registerForm.style.display = "block";
+      } else if (toLogIn) {
+        message = this.getMessage("TO_LOGIN")
+        loginForm.style.display = "block";
+        this.loadGoogleLogIn();
+        //window.location.reload();
+      } else if (toUpdateAccount) {
+        message = this.getMessage("TO_UPDATE_ACCOUNT")
+        updateAccountForm.style.display = "block";
+      }
+    }
+    if (updateMessage) {
+      this.messageService.update(message, "INFO");
+    }
+  }
+
+  loadGoogleLogIn() {
+    // @ts-ignore
+    window.onGoogleLibraryLoad = () => {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: this.clientId,
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+      // @ts-ignore
+      google.accounts.id.renderButton(
+          // @ts-ignore
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large", width: "100%", logo_alignment: "center"}
+      );
+      // @ts-ignore
+      google.accounts.id.prompt((notification: PromptMomentNotification) => {});
+    };
+  }
+
+  async handleCredentialResponse(response: CredentialResponse) {
+    await this.accountService.LoginWithGoogle(response.credential);
   }
 
   get primEmail() {
@@ -67,34 +147,26 @@ export class AccountComponent implements OnInit {
   }
 
   /**
-   * Change form between login, sign-up, profile
-   * @param toSignUp
-   * @param toLogIn
-   * @param changeMessage
+   * When new user use Google login, they need to update their account info
+   * uni and password
    */
-  changeForm(toSignUp: boolean, toLogIn: boolean, changeMessage: boolean = true): void {
-    if(changeMessage) {
-      this.messageService.clear();
-    }
-    this.clearField();
-    const registerForm = document.getElementById("register-form");
-    const loginForm = document.getElementById("login-form");
-    let message = "";
-    if(registerForm != null && loginForm != null) {
-      registerForm.style.display = "none";
-      loginForm.style.display = "none";
-      if (toSignUp) {
-        message = this.getMessage("TO_REGISTER")
-        registerForm.style.display = "block";
-      } else if (toLogIn) {
-        message = this.getMessage("TO_LOGIN")
-        loginForm.style.display = "block";
-      }
-    }
-    console.log(message);
-    if(changeMessage) {
-      this.messageService.update(message, "INFO");
-    }
+  updateAccount() {
+    this.accountService.updateAccount(this.uni, this.password)
+        .subscribe({
+          next: _ => {
+            this.accountService.getAccount(this.uni).subscribe((res: Account) => {
+              localStorage.setItem('currentUser', JSON.stringify(res))
+            });
+            this.router.navigate(['/home']).then(() => {
+              window.location.reload();
+            });
+          },
+          error: err => {
+            localStorage.clear();
+            this.changeForm(false,true,false);
+            this.messageService.update(`${JSON.stringify(err.error)}`, "DANGER");
+          }
+        });
   }
 
   /** createAccount:
@@ -122,7 +194,7 @@ export class AccountComponent implements OnInit {
         this.uni, this.email_address, this.password, this.last_name, this.first_name, this.middle_name
     ).subscribe((_) => {
           if(this.accountService.addAccountSuccess) {
-            this.changeForm(false, true, false);
+            this.changeForm(false, true, false, false);
           }
         }
     );

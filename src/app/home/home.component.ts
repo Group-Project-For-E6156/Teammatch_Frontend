@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountService} from "../account.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -28,6 +29,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     public accountService: AccountService,
+    public router: Router
   ) { }
 
   ngOnInit(): void {
@@ -40,6 +42,9 @@ export class HomeComponent implements OnInit {
       this.user.email = account.email;
       this.user.first_name = account.first_name;
       this.user.last_name = account.last_name;
+      if (this.accountService.user_img !== "") {
+        this.profile_img = this.accountService.user_img;
+      }
 
       // get profile
       this.accountService.getProfile().subscribe(
@@ -50,7 +55,9 @@ export class HomeComponent implements OnInit {
             this.user.gender = profile.gender;
             this.user.major = profile.major;
             this.user.msg = profile.personal_message;
-            if(this.user.gender == "f") {
+            if (this.accountService.user_img !== "") {
+              this.profile_img = this.accountService.user_img;
+            } else if(this.user.gender == "f") {
               this.profile_img = this.FEMALE_IMAGE;
             } else if (this.user.gender == "m") {
               this.profile_img = this.MALE_IMAGE;
@@ -69,6 +76,12 @@ export class HomeComponent implements OnInit {
   logOut(): void {
     this.accountService.logOut()
     window.location.reload();
+  }
+
+  toAccount(): void {
+    this.router.navigate(['/account']).then(() => {
+      window.location.reload();
+    });
   }
 
 }

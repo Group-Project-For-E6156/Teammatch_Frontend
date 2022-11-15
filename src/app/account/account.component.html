@@ -32,7 +32,7 @@
       </div>
       <button (click)="createAccount()">create</button>
       <p class="message">
-        Already registered? <a (click)="changeForm(false, true)">Sign In</a>
+        Already registered? <a (click)="changeForm(false, true, false)">Sign In</a>
       </p>
     </form>
     <form id="login-form">
@@ -47,9 +47,27 @@
         <input id="pwd_login" name="input" type="password" [(ngModel)]="this.password"/>
       </div>
       <button (click)="logIntoAccount()">login</button>
+      <div id="buttonDiv"></div>
       <p class="message">
-        Not registered? <a (click)="changeForm(true, false)">Create an account</a>
+        Not registered? <a (click)="changeForm(true, false, false)">Create an account</a>
       </p>
+    </form>
+    <form id="update-account-form">
+      <h1>Welcome {{this.first_name}}, please update your personal account info!</h1>
+      <app-messages></app-messages>
+      <div [formGroup] = "user_email" class="form-group form-inline">
+        <label for="email">EMAIL ADDRESS</label>
+        <span id="email">{{this.email_address}}</span>
+      </div>
+      <div class="form-group form-inline">
+        <label for="uni_update">UNI</label>
+        <input id="uni_update" name = "input" type="text" [(ngModel)]="this.uni">
+      </div>
+      <div class="form-group form-inline">
+        <label for="password">PASSWORD</label>
+        <input id="password" name="input" type="password" [(ngModel)]="this.password"/>
+      </div>
+      <button (click)="updateAccount()">save</button>
     </form>
   </div>
 </div>
