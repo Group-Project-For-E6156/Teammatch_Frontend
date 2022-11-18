@@ -193,7 +193,7 @@
           <ng-template #optionA>
             <td> Only Captain Add Memeber <br><br><br></td>
           </ng-template>
-          <button style="width:30%; display:inline-block"(click)="find_my_meammate(x.Team_Captain_Uni, x.Course_id)">Match Classmates</button>
+          <button style="width:30%; display:inline-block"(click)="find_my_teammate(x.Team_Captain_Uni, x.Course_id)">Match Classmates</button>
            <br><br><br>
         </div>
         <div class="form-group" *ngIf='member_click'>
@@ -207,9 +207,25 @@
           </div>
           <button (click)="add_member(this.add_Student_Uni, this.add_Student_Name, x.Course_id, x.Team_id)">Add Member</button> <br><br>
         </div>
-
         <div>
-
+          <table class="table table-striped" >
+            <thead>
+            <tr>
+              <th scope="col">Uni</th>
+              <th scope="col">Timezone</th>
+              <th scope="col">Major</th>
+              <th scope="col">Personal Message</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let z of Find_My_Teammate" style="text-align: left">
+              <td [routerLink]="['/preferences']"> {{z.uni}}</td>
+              <td [routerLink]="['/preferences']">{{z.prefered_Timezone}}</td>
+              <td [routerLink]="['/preferences']">{{z.prefered_Dept}}</td>
+              <td [routerLink]="['/preferences']">{{z.prefered_message}}</td>
+            </tr>
+            </tbody>
+          </table>
         </div>
 
         </div>

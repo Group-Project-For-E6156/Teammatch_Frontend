@@ -298,7 +298,7 @@ export class TeamComponent implements OnInit {
   }); 
   }
 
-  find_my_meammate(uni= this.delete_captain_uni, course_id=this.browse_course_id):void{
+  find_my_teammate(uni= this.delete_captain_uni, course_id=this.browse_course_id):void{
     let curMessage = "";
     if(curMessage !== "") {
     // there are some error when inputting fields
