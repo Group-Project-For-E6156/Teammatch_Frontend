@@ -11,7 +11,7 @@ import { catchError, throwError, Observable, of} from 'rxjs';
 
 export class CourseService {
   addCourseSuccess: boolean = false;
-  courseurl = "http://127.0.0.1:5011/course/";
+  courseurl = "http://127.0.0.1:1000/course/";
   header = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',
@@ -36,12 +36,14 @@ export class CourseService {
       }
       else {
           if (operation == "addCourse"){
-            if (error.error == "There already exist one course") {
-              console.log(111);
-              currmessage = "There already exist one course";
-            }
+              currmessage = error.error;
           } else if (operation == "checkCourse") {
-            currmessage = "Cannot find the course you input!";
+            if (error.error == "NOT FOUND") {
+              currmessage = "Cannot find the course you input!";
+            }
+            else {
+              currmessage = error.error;
+            }
           }
         this.messageService.update(currmessage, "WARNING");
       }

@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AccountService {
-  accountServiceUrl: string = "http://127.0.0.1:2333/students/";
+  accountServiceUrl: string = "http://127.0.0.1:1000/students/";
   addAccountSuccess: boolean = false;
   currentUser: Account;
   user_email: string;

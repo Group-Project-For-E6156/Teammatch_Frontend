@@ -23,7 +23,7 @@ export class TokenInterceptor implements HttpInterceptor {
         if (token != null) {
             request = request.clone({headers: request.headers.set(TOKEN_HEADER_KEY, token)});
         }
-
+        console.log(request);
         return next.handle(request).pipe(catchError(error => {
             if (error instanceof HttpErrorResponse && !request.url.includes('/login') && error.status === 401) {
                 console.log("User session expired!!!!!!!");

@@ -10,7 +10,7 @@ import {AccountService} from "./account.service";
 })
 
 export class CoursePreferenceService {
-  preferenceurl = "http://127.0.0.1:5011/course/student_preference/";
+  preferenceurl = "http://127.0.0.1:1000/course/student_preference/";
   isLoggedIn = false;
   notLoggedIn = true;
   user = {
@@ -80,6 +80,7 @@ export class CoursePreferenceService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
+      console.log(error.error);
       let currmessage = "";
       if (error.status == 200){
         currmessage = "Your operation success";
@@ -94,10 +95,10 @@ export class CoursePreferenceService {
               currmessage = error.error;
             }
           }
-        } else if (operation == "editCoursePreference" && error.error == "The preference does not exist"){
-          currmessage = "The preference does not exist";
-        } else if (operation == "deleteCoursePreference" && error.error == "No existed Preference is found!"){
-          currmessage = "No existed Preference is found!";
+        } else if (operation == "editCoursePreference") {
+          currmessage = error.error;
+        } else if (operation == "deleteCoursePreference"){
+          currmessage = error.error;
         } else {
           currmessage = error.error;
         }
