@@ -175,8 +175,13 @@ export class TeamService {
     team_id: number, course_id: number, team_captain_uni: string
   ): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/delete/team_id=${team_id}&team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
-    return this.http.get<any>(teamUrl).pipe(
+    let request: any = {
+      team_id: team_id,
+      course_id:course_id.toString(),
+      team_captain_uni: team_captain_uni
+    };
+    teamUrl = this.getTeamServiceUrl() + `delete/`;
+    return this.http.post<any>(teamUrl, request).pipe(
       catchError(this.handleError<any>("deleteteam")));
   }
 
