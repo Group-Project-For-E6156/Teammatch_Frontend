@@ -121,6 +121,8 @@ export class AccountService {
       uni: uni,
       password: password
     };
+    let res1 = this.http.get<any>("http://127.0.0.1:1000/course/");
+
     return this.http
         .post<any>(`${this.accountServiceUrl}login`, request)
         .subscribe({

@@ -10,7 +10,7 @@ import {AccountService} from "./account.service";
   })
 
 export class TeamService {
-  teamurl = "http://127.0.0.1:5011/team/";
+  teamurl = "http://127.0.0.1:2233/team/";
   isLoggedIn = false;
   notLoggedIn = true;
   user = {
@@ -43,7 +43,7 @@ export class TeamService {
       private messageService: MessageService,
       private accountService: AccountService
     ) {}
-  
+
   ngOnInit(): void{
     this.isLoggedIn = this.accountService.isLoggedIn;
     this.notLoggedIn = !this.isLoggedIn;
@@ -85,6 +85,7 @@ export class TeamService {
     return (error: any): Observable<T> => {
       console.log(error.error); // log to console instead
       let currmessage = "";
+      console.log(operation);
       if (error.status == 200){
             currmessage = "Your operation success";
             this.messageService.update(currmessage, "SUCCESS");
@@ -96,10 +97,7 @@ export class TeamService {
           }
         }
         if (operation == "addteam"){
-          if (error.error == "NOT FOUND") {
-            console.log(111);
-            currmessage = "Not found";
-          }
+          currmessage = error.error;
         }
         if (operation == "deleteteam"){
           if (error.error == "No existed Preference is found!") {
@@ -107,11 +105,8 @@ export class TeamService {
             currmessage = "No existed Preference is found!";
           }
         }
-        if (operation == "notFound"){
-          if (error.error == "NOT FOUND") {
-            console.log(111);
-            currmessage = "Not found";
-          }
+        if (operation == "add_member"){
+          currmessage = error.error;
         }
       this.messageService.update(currmessage, "WARNING");
     }
@@ -136,7 +131,7 @@ export class TeamService {
 
       // This is some seriously bad code.
       // If you do this on a job interview, you did not learn this in my class.
-      result = "http://127.0.0.1:5011/";
+      result = "http://127.0.0.1:2233/";
       return result;
     }
 
@@ -157,7 +152,7 @@ export class TeamService {
     console.log(teamUrl);
     return this.http.get(teamUrl).pipe(catchError(this.handleError<any>("SearchTeam")));
     }
-  
+
 
   add_team(
     course_id: number, team_name: string, team_message: string,  number_needed: number, team_captain: string, team_captain_uni: string
@@ -204,7 +199,7 @@ export class TeamService {
     let teamUrl: string = "";
     teamUrl = this.getTeamServiceUrl() + `team/add_member/uni=${uni}&student_name=${Student_Name}&team_id=${team_id}&course_id=${course_id}`;
     return this.http.get<any>(teamUrl).pipe(
-      catchError(this.handleError<any>("notFound")));
+      catchError(this.handleError<any>("add_member")));
   }
 
   delete_member(uni: string, team_id: number, course_id: number): Observable<any> {

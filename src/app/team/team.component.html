@@ -219,10 +219,10 @@
             </thead>
             <tbody>
             <tr *ngFor="let z of Find_My_Teammate" style="text-align: left">
-              <td [routerLink]="['/preferences']"> {{z.uni}}</td>
-              <td [routerLink]="['/preferences']">{{z.prefered_Timezone}}</td>
-              <td [routerLink]="['/preferences']">{{z.prefered_Dept}}</td>
-              <td [routerLink]="['/preferences']">{{z.prefered_message}}</td>
+              <td> {{z.uni}}</td>
+              <td>{{z.timezone}}</td>
+              <td>{{z.major}}</td>
+              <td>{{z.personal_message}}</td>
             </tr>
             </tbody>
           </table>

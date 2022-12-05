@@ -65,7 +65,7 @@ export class TeamComponent implements OnInit {
   All_teams: Team[];
   Team_member: StudentInTeam[];
   currentWholeUrl : string;
-  Find_My_Teammate: CoursePreference[];
+  Find_My_Teammate: any;
   current_uni = this.accountService.currentUser.uni
 
   /* pagination field */
@@ -159,7 +159,7 @@ export class TeamComponent implements OnInit {
     this.TeamService.browse_team_info_by_input(course_id,team_captain_uni).subscribe((res) => {
         this.Team_info=Array.from(Object.values(res));
         console.log(this.Team_info);
-    }); 
+    });
     this.browse_all_team_member(course_id, team_id);
   }
 
@@ -269,7 +269,7 @@ export class TeamComponent implements OnInit {
     this.TeamService.browse_all_team_member(course_id,team_id).subscribe((res) => {
         this.Team_member=Array.from(Object.values(res));
         console.log(this.Team_member);
-    }); 
+    });
   }
 
   add_member(uni=this.add_Student_Uni,student_name=this.add_Student_Name, course_id=this.browse_course_id, team_id=this.browse_team_id):void{
@@ -281,8 +281,8 @@ export class TeamComponent implements OnInit {
     }
     this.TeamService.add_member(uni, student_name, team_id, course_id).subscribe(() => {
       this.member_click=false;
-      this.browse_all_team_member(course_id, team_id); 
-  }); 
+      this.browse_all_team_member(course_id, team_id);
+  });
   }
 
   delete_member(uni=this.delete_Student_Uni, course_id=this.browse_course_id, team_id=this.browse_team_id):void{
@@ -295,7 +295,7 @@ export class TeamComponent implements OnInit {
     this.TeamService.delete_member(uni, team_id, course_id).subscribe((res) => {
       this.member_click=false;
       this.browse_all_team_member(course_id, team_id);
-  }); 
+  });
   }
 
   find_my_teammate(uni= this.delete_captain_uni, course_id=this.browse_course_id):void{
@@ -306,8 +306,9 @@ export class TeamComponent implements OnInit {
       return;
     }
     this.TeamService.find_my_teammate(uni, course_id).subscribe((res) => {
-      this.Find_My_Teammate=Array.from(Object.values(res));
-      console.log(this.Find_My_Teammate);
-  }); 
+
+      /** this.Find_My_Teammate=Array.from(Object.values(res)); **/
+      this.Find_My_Teammate = res;
+  });
   }
 }

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AccountService} from "../account.service";
 import {Router} from "@angular/router";
+import {Account} from "../account/account";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-home',
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit {
   profile_img = this.UNKNOWN_IMAGE;
 
   constructor(
+    private http: HttpClient,
     public accountService: AccountService,
     public router: Router
   ) { }
@@ -74,8 +77,8 @@ export class HomeComponent implements OnInit {
   }
 
   logOut(): void {
-    this.accountService.logOut()
-    window.location.reload();
+    this.accountService.logOut();
+     window.location.reload();
   }
 
   toAccount(): void {
