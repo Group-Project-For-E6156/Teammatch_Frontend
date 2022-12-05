@@ -158,8 +158,16 @@ export class TeamService {
     course_id: number, team_name: string, team_message: string,  number_needed: number, team_captain: string, team_captain_uni: string
   ): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl()  + `team/add/team_name=${team_name}&team_captain_uni=${team_captain_uni}&team_captain=${team_captain}&course_id=${course_id}&number_needed=${number_needed}&team_message=${team_message}`;
-    return this.http.get<any>(teamUrl).pipe(
+    teamUrl = this.getTeamServiceUrl()  + `add/`;
+    let request: any = {
+      team_name: team_name,
+      team_message: team_message,
+      number_needed: number_needed,
+      team_captain: team_captain,
+      team_captain_uni: team_captain_uni,
+      course_id:course_id
+    };
+    return this.http.post<any>(teamUrl, request).pipe(
       catchError(this.handleError<any>("addteam")));
   }
 
@@ -176,8 +184,18 @@ export class TeamService {
     team_name: string, course_id: number, team_captain: string, team_id: number,  number_needed: number, team_message: string,team_captain_uni: string
   ): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/edit/team_name=${team_name}&team_captain_uni=${team_captain_uni}&team_captain=${team_captain}&course_id=${course_id}&number_needed=${number_needed}&team_message=${team_message}`;
-    return this.http.get<any>(teamUrl).pipe(
+    teamUrl = this.getTeamServiceUrl() + `edit/`;
+    let request: any = {
+      team_name: team_name,
+      team_message: team_message,
+      number_needed: number_needed,
+      team_captain: team_captain,
+      team_captain_uni: team_captain_uni,
+      course_id:course_id, 
+      team_id: team_id
+    };
+    console.log(request);
+    return this.http.post<any>(teamUrl, request).pipe(
       catchError(this.handleError<any>("editteam")));
   }
   browse_team_info_by_input(course_id: number, team_captain_uni: string): Observable<any> {
