@@ -238,6 +238,8 @@ export class TeamComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
+    console.log(this.edited_team_name, this.edited_Course_id, this.edited_team_captain,
+      this.edited_team_id, this.edited_number_needed, this.edited_team_messages, this.edit_captain_uni);
     this.TeamService.edit_team(
       this.edited_team_name, this.edited_Course_id, this.edited_team_captain,
       this.edited_team_id, this.edited_number_needed, this.edited_team_messages, this.edit_captain_uni

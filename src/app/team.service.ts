@@ -191,13 +191,12 @@ export class TeamService {
       number_needed: number_needed,
       team_captain: team_captain,
       team_captain_uni: team_captain_uni,
-      course_id:course_id, 
-      team_id: team_id
+      course_id:course_id.toString()
     };
-    console.log(request);
     return this.http.post<any>(teamUrl, request).pipe(
       catchError(this.handleError<any>("editteam")));
   }
+
   browse_team_info_by_input(course_id: number, team_captain_uni: string): Observable<any> {
     let teamUrl: string = "";
     teamUrl = this.getTeamServiceUrl() + `team/?team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
