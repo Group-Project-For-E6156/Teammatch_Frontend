@@ -131,7 +131,7 @@ export class TeamService {
 
       // This is some seriously bad code.
       // If you do this on a job interview, you did not learn this in my class.
-      result = "http://127.0.0.1:2233/";
+      result = "http://127.0.0.1:2233/team/";
       return result;
     }
 
@@ -146,7 +146,7 @@ export class TeamService {
       'key': 'x-api-key',
       'value': 'NNctr6Tjrw9794gFXf3fi6zWBZ78j6Gv3UCb3y0x'})
     if (params[`course_id`]) {
-      teamUrl = this.getTeamServiceUrl() + `team/course_id=${params[`course_id`]}/limit=${params[`size`]}&offset=${params[`size`]*params[`page`]}`;
+      teamUrl = this.getTeamServiceUrl() + `?course_id=${params[`course_id`]}&limit=${params[`size`]}&offset=${params[`size`]*params[`page`]}`;
     }
     const httpOptions = {headers: headers};
     console.log(teamUrl);
@@ -180,13 +180,13 @@ export class TeamService {
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("editteam")));
   }
-
   browse_team_info_by_input(course_id: number, team_captain_uni: string): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
+    teamUrl = this.getTeamServiceUrl() + `team/?team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("addteam")));
   }
+
 
   browse_all_team_member(course_id: number, team_id: number): Observable<any> {
     let teamUrl: string = "";
