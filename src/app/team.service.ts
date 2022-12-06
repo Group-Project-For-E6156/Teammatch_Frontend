@@ -204,7 +204,7 @@ export class TeamService {
 
   browse_team_info_by_input(course_id: number, team_captain_uni: string): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/?team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
+    teamUrl = this.getTeamServiceUrl() + `info/?team_captain_uni=${team_captain_uni}&course_id=${course_id}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("addteam")));
   }
@@ -212,29 +212,40 @@ export class TeamService {
 
   browse_all_team_member(course_id: number, team_id: number): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/team_member/team_id=${team_id}&course_id=${course_id}`;
+    teamUrl = this.getTeamServiceUrl() + `team_member/?team_id=${team_id}&course_id=${course_id}`;
     return this.http.get<any>(teamUrl).pipe(
       catchError(this.handleError<any>("notFound")));
   }
 
   add_member(uni: string, Student_Name: string, team_id: number, course_id: number): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/add_member/uni=${uni}&student_name=${Student_Name}&team_id=${team_id}&course_id=${course_id}`;
-    return this.http.get<any>(teamUrl).pipe(
+    let request: any = {
+      uni: uni,
+      student_name: Student_Name,
+      team_id: team_id,
+      course_id: course_id.toString()
+    };
+    teamUrl = this.getTeamServiceUrl() + `add_member/`;
+    return this.http.post<any>(teamUrl, request).pipe(
       catchError(this.handleError<any>("add_member")));
   }
 
   delete_member(uni: string, team_id: number, course_id: number): Observable<any> {
     let teamUrl: string = "";
-    teamUrl = this.getTeamServiceUrl() + `team/delete_member/uni=${uni}&team_id=${team_id}&course_id=${course_id}`;
-    return this.http.get<any>(teamUrl).pipe(
+    let request: any = {
+      uni: uni,
+      team_id: team_id,
+      course_id: course_id.toString()
+    };
+    teamUrl = this.getTeamServiceUrl() + `delete_member/`;
+    return this.http.post<any>(teamUrl, request).pipe(
       catchError(this.handleError<any>("notFound")));
   }
 
 
   find_my_teammate(uni: string, course_id: number): Observable<any> {
   let teamUrl: string = "";
-  teamUrl = this.getTeamServiceUrl() + `team/find_my_teammate/uni=${uni}&course_id=${course_id}`;
+  teamUrl = this.getTeamServiceUrl() + `find_my_teammate/?uni=${uni}&course_id=${course_id}`;
   return this.http.get<any>(teamUrl).pipe(
     catchError(this.handleError<any>("notFound")));
   }

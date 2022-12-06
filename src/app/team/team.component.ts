@@ -156,8 +156,10 @@ export class TeamComponent implements OnInit {
       this.messageService.update(curMessage, "WARNING");
       return;
     }
+    console.log(11111);
     this.TeamService.browse_team_info_by_input(course_id,team_captain_uni).subscribe((res) => {
-        this.Team_info=Array.from(Object.values(res));
+        /**this.Team_info=Array.from(Object.values(res));**/
+        this.Team_info = res;
         console.log(this.Team_info);
     });
     this.browse_all_team_member(course_id, team_id);
