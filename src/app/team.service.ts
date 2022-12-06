@@ -10,7 +10,7 @@ import {AccountService} from "./account.service";
   })
 
 export class TeamService {
-  teamurl = "http://127.0.0.1:2233/team/";
+  teamurl = "http://127.0.0.1:1000/team/";
   isLoggedIn = false;
   notLoggedIn = true;
   user = {
@@ -108,6 +108,9 @@ export class TeamService {
         if (operation == "add_member"){
           currmessage = error.error;
         }
+        if (operation == "matchteammate"){
+          currmessage = error.error;
+        }
       this.messageService.update(currmessage, "WARNING");
     }
     // Let the app keep running by returning an empty result.
@@ -131,7 +134,7 @@ export class TeamService {
 
       // This is some seriously bad code.
       // If you do this on a job interview, you did not learn this in my class.
-      result = "http://127.0.0.1:2233/team/";
+      result = "http://127.0.0.1:1000/team/";
       return result;
     }
 
@@ -247,6 +250,6 @@ export class TeamService {
   let teamUrl: string = "";
   teamUrl = this.getTeamServiceUrl() + `find_my_teammate/?uni=${uni}&course_id=${course_id}`;
   return this.http.get<any>(teamUrl).pipe(
-    catchError(this.handleError<any>("notFound")));
+    catchError(this.handleError<any>("matchteammate")));
   }
 }
