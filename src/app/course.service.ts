@@ -11,7 +11,7 @@ import { catchError, throwError, Observable, of} from 'rxjs';
 
 export class CourseService {
   addCourseSuccess: boolean = false;
-  courseurl = "http://127.0.0.1:1000/course/";
+  courseurl = "http://127.0.0.1:10000/course/";
   header = new HttpHeaders({
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

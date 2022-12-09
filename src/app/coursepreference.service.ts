@@ -10,7 +10,7 @@ import {AccountService} from "./account.service";
 })
 
 export class CoursePreferenceService {
-  preferenceurl = "http://127.0.0.1:1000/course/student_preference/";
+  preferenceurl = "http://127.0.0.1:10000/course/student_preference/";
   isLoggedIn = false;
   notLoggedIn = true;
   user = {

@@ -10,7 +10,6 @@ import {AccountService} from "./account.service";
   })
 
 export class TeamService {
-  teamurl = "http://127.0.0.1:1000/team/";
   isLoggedIn = false;
   notLoggedIn = true;
   user = {
@@ -134,7 +133,7 @@ export class TeamService {
 
       // This is some seriously bad code.
       // If you do this on a job interview, you did not learn this in my class.
-      result = "http://127.0.0.1:1000/team/";
+      result = "http://127.0.0.1:10000/team/";
       return result;
     }
 
